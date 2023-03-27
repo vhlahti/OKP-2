@@ -32,6 +32,9 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+      },
+      (error) => {
+        console.log('Error getting user location:', error.message);
       });
     } else {
       console.log('Geolocation is not supported by this browser.');
