@@ -8,11 +8,4 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'OKP-2-frontend';
 
-  // google maps settings
-
-  options: google.maps.MapOptions = {
-    center: {lat: 60.172727, lng: 24.939491},
-    zoom: 13
-  };
-
 }
