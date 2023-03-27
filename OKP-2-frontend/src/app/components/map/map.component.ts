@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
+
   // google maps settings
   zoom = 13;
   height = '400px';
@@ -14,6 +15,9 @@ export class MapComponent implements OnInit {
   options: google.maps.MapOptions = {
     // additional settings here
   };
+
+  // marker settings
+  userCurrentLocation = false;
 
   constructor() {}
 
@@ -32,6 +36,8 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        // update #userMarker visibility
+        this.userCurrentLocation = true;
       },
       (error) => {
         console.log('Error getting user location:', error.message);
