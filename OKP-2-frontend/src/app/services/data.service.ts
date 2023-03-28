@@ -9,4 +9,19 @@ import { catchError, retry } from 'rxjs/operators';
 export class DataService {
 
   constructor(private http: HttpClient) { }
+
+  apiUrl = 'https://localhost:4200/api/';
+
+  getActivities() {
+    // return this.http.get(this.apiUrl)
+  }
+
+  getEvents() {
+    // return this.http.get(this.apiUrl)
+  }
+
+  getPlaces() {
+    // return this.http.get(this.apiUrl)
+  }
+
 }
