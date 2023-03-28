@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { HeaderComponent } from './components/header/header.component';
     GoogleMapsModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
