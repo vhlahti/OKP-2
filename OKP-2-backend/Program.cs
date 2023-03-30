@@ -1,3 +1,5 @@
+using backend.Clients;
+
 var builder = WebApplication.CreateBuilder(args);
 string[] origins = { "http://localhost:8080", "https://localhost:8081" };
 builder.Services.AddCors(options =>
@@ -9,6 +11,10 @@ builder.Services.AddCors(options =>
         .AllowCredentials());
 });
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<IHelsinkiClient, HelsinkiClient>(client =>
+{
+    client.BaseAddress = new Uri("https://open-api.myhelsinki.fi/");
+});
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
