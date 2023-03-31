@@ -10,18 +10,24 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  apiUrl = 'https://localhost:4200/api/';
+  apiUrl = 'https://localhost:7266/api/';
+
+  issUrl = 'https://api.wheretheiss.at/v1/satellites/25544';
 
   getActivities() {
-    // return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl + "activities?limit=3")
   }
 
   getEvents() {
-    // return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl + "events?limit=3")
   }
 
   getPlaces() {
-    // return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl + "places?limit=3")
+  }
+
+  getISS() {
+    return this.http.get(this.issUrl);
   }
 
 }

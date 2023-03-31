@@ -10,5 +10,8 @@ export class FooterComponent {
   faLandmark = faLandmark; 
     faPersonBiking = faPersonBiking;
     faMasksTheater = faMasksTheater;
+
+
+  
 }
 
