@@ -1,0 +1,42 @@
+.footer-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.footer-bar .bar-button label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.content {
+  display: none;
+  border: none;
+}
+
+.footer-container input {
+  display: none;
+}
+
+.footer-container label {
+  display: inline-block;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.footer-container label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+}
+
+.footer-container label:hover {
+  color: #e0e0e0;
+  cursor: pointer;
+}
+
+.footer-container input:checked + label {
+  filter: drop-shadow(0 0 6px #e2e2e2);
+}
