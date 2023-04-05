@@ -23,7 +23,7 @@ public class HelsinkiController : Controller
     }
 
     [HttpGet]
-    [Route("/api/places")]
+    [Route("/api/places/")]
     public IActionResult Places([FromQuery] HelsinkiFilters filters)
     {
         var address = "v2/places/";
@@ -44,7 +44,7 @@ public class HelsinkiController : Controller
     [Route("/api/activities/")]
     public IActionResult Activities([FromQuery] HelsinkiFilters filters)
     {
-        var address = "v2/activities/";
+        var address = "v2/activities";
         var data = _helsinkiClient.Get(UriBuilder(filters, address));
         return Ok(new { Data = data });
     }
