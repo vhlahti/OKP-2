@@ -1,7 +1,7 @@
 using backend.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
-string[] origins = { "http://localhost:8080", "https://localhost:8081" };
+string[] origins = { "http://localhost:4200", "https://localhost:4200" };
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policyBuilder => policyBuilder
