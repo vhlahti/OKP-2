@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { APIResponse } from 'src/app/models/IApiResponse';
-import { ILocation } from 'src/app/models/ILocation';
 
 @Component({
   selector: 'app-list-places',
@@ -12,7 +11,6 @@ import { ILocation } from 'src/app/models/ILocation';
 export class ListPlacesComponent implements OnInit {
 
     places: PlaceV2[] = [];
-    placeLocations: ILocation[] = [];
 
     constructor(private dataService: DataService) { }
 
@@ -24,14 +22,6 @@ export class ListPlacesComponent implements OnInit {
         this.dataService.getPlaces().subscribe((res: APIResponse) => {
             let result = JSON.parse(res.data.result);
             this.places = result.data;
-            console.log(this.places);
-
-            // fetch the location coordinates and push them to an array
-            for (const place of this.places) {
-                const { lat, lon } = place.location;
-                this.placeLocations.push({ position: { lat, lng: lon } });
-                }
-                console.log(this.placeLocations);
         });
     }
 

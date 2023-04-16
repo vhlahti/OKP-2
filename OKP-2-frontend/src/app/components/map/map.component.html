@@ -5,6 +5,20 @@
   [height]="height"
   [width]="width">
 
-<map-marker #userLocationMarker *ngIf="userCurrentLocation" [position]="center"></map-marker>
+<map-marker #userLocationMarker *ngIf="userCurrentLocation"
+  [position]="center">
+</map-marker>
+
+<map-marker *ngFor="let activity of activityLocations"
+  [position]="activity.position">
+</map-marker>
+
+<map-marker *ngFor="let event of eventLocations"
+  [position]="event.position">
+</map-marker>
+
+<map-marker *ngFor="let place of placeLocations"
+  [position]="place.position">
+</map-marker>
 
 </google-map>
