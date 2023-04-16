@@ -27,6 +27,9 @@ export class MapComponent implements OnInit {
 
     // get user's current location and keep track of it via geolocation api
     this.getUserLocation();
+
+    // repeat getUserLocation every 1000 milliseconds
+    setInterval(this.getUserLocation, 1000);
   }
 
   getUserLocation() {
