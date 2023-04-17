@@ -12,20 +12,6 @@ body {
   justify-content: space-between;
 }
 
-/* .button-user {
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  right: 4.5rem;
-}
- */
-/* .button-bar {
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  right: 1rem;
-}
- */
 h2,
 h3,
 h4 {
@@ -58,14 +44,4 @@ th {
   text-align: center;
   padding: 0.5rem 1.5rem 0;
   border-collapse: separate;
-}
-
-.button {
-  display: inline-flex;
-  cursor: pointer;
-}
-
-.button:hover {
-  opacity: 0.8;
-  font-weight: normal;
 }
