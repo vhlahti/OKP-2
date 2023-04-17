@@ -9,22 +9,23 @@ body {
   display: flex;
   align-items: center;
   padding: 0 1rem;
+  justify-content: space-between;
 }
 
-.button-user {
+/* .button-user {
   display: flex;
   cursor: pointer;
   position: absolute;
-  right: 4rem;
+  right: 4.5rem;
 }
-
-.button-bar {
+ */
+/* .button-bar {
   display: flex;
   cursor: pointer;
   position: absolute;
-  right: 2rem;
+  right: 1rem;
 }
-
+ */
 h2,
 h3,
 h4 {
