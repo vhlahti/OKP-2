@@ -130,7 +130,8 @@ export class MapComponent implements OnInit {
         // fetch the location coordinates and push them to an array
         for (const activity of this.activities) {
             const { lat, long } = activity.address.location;
-            this.activityLocations.push({ position: { lat, lng: long } });
+            const name = activity.descriptions["fi"]?.name ?? activity.descriptions["en"]?.name;
+            this.activityLocations.push({ position: { lat, lng: long }, name });
             }
             console.log(this.activityLocations);
     });
@@ -145,7 +146,8 @@ export class MapComponent implements OnInit {
         // fetch the location coordinates and push them to an array
         for (const event of this.events) {
         const { lat, lon } = event.location;
-        this.eventLocations.push({ position: { lat, lng: lon } });
+        const name = event.name.fi ?? event.name.en;
+        this.eventLocations.push({ position: { lat, lng: lon }, name });
         }
         console.log(this.eventLocations);
     });
@@ -160,7 +162,8 @@ export class MapComponent implements OnInit {
         // fetch the location coordinates and push them to an array
         for (const place of this.places) {
             const { lat, lon } = place.location;
-            this.placeLocations.push({ position: { lat, lng: lon } });
+            const name = place.name.fi ?? place.name.en;
+            this.placeLocations.push({ position: { lat, lng: lon }, name });
             }
             console.log(this.placeLocations);
     });

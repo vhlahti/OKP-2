@@ -11,17 +11,20 @@
 
 <map-marker *ngFor="let activity of activityLocations"
   [position]="activity.position"
-  [options]="activityMarkerOptions">
+  [options]="activityMarkerOptions"
+  [title]="activity.name">
 </map-marker>
 
 <map-marker *ngFor="let event of eventLocations"
   [position]="event.position"
-  [options]="eventMarkerOptions">
+  [options]="eventMarkerOptions"
+  [title]="event.name">
 </map-marker>
 
 <map-marker *ngFor="let place of placeLocations"
   [position]="place.position"
-  [options]="placeMarkerOptions">
+  [options]="placeMarkerOptions"
+  [title]="place.name">
 </map-marker>
 
 </google-map>
