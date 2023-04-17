@@ -5,6 +5,7 @@ import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { Event } from 'src/app/models/helsinki-api-model';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
+import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-map',
@@ -13,6 +14,11 @@ import { ILocation } from 'src/app/models/ILocation';
 })
 export class MapComponent implements OnInit {
 
+  faLandmark = faLandmark; 
+  faPersonBiking = faPersonBiking;
+  faMasksTheater = faMasksTheater;
+
+  // api and coordinate data
   activities: ActivityV2[] = [];
   activityLocations: ILocation[] = [];
   events: Event[] = [];
@@ -29,8 +35,56 @@ export class MapComponent implements OnInit {
     // additional settings here
   };
 
-  // marker settings
+  // user marker settings
   userCurrentLocation = false;
+
+  // activity marker settings
+  activityMarkerOptions: google.maps.MarkerOptions = {
+    icon: {
+      path: faPersonBiking.icon[4] as string,
+      fillColor: "#0000ff", // color of the marker
+      fillOpacity: 1,
+      anchor: new google.maps.Point(
+        faPersonBiking.icon[0] / 2, // width
+        faPersonBiking.icon[1] // height
+      ),
+      strokeWeight: 1,
+      strokeColor: "#ffffff",
+      scale: 0.060, // size of the marker
+    }
+  };
+
+  // event marker settings
+  eventMarkerOptions: google.maps.MarkerOptions = {
+    icon: {
+      path: faMasksTheater.icon[4] as string,
+      fillColor: "#8a2be2",
+      fillOpacity: 1,
+      anchor: new google.maps.Point(
+        faMasksTheater.icon[0] / 2, // width
+        faMasksTheater.icon[1] // height
+      ),
+      strokeWeight: 1,
+      strokeColor: "#ffffff",
+      scale: 0.060,
+    }
+  };
+
+  // place marker settings
+  placeMarkerOptions: google.maps.MarkerOptions = {
+    icon: {
+      path: faLandmark.icon[4] as string,
+      fillColor: "#d70909",
+      fillOpacity: 1,
+      anchor: new google.maps.Point(
+        faLandmark.icon[0] / 2, // width
+        faLandmark.icon[1] // height
+      ),
+      strokeWeight: 1,
+      strokeColor: "#ffffff",
+      scale: 0.060,
+    }
+  };
 
   constructor(private dataService: DataService) {}
 
