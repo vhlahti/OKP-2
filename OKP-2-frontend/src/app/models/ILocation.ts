@@ -11,5 +11,6 @@ export interface ILocation {
         lat: number;
         lng: number;
     }
+    tags: string[];
     url: string;
 }

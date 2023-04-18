@@ -51,7 +51,7 @@ export interface ActivityV2 {
     priceEUR: Price;
     siteUrl: string;
     storeUrl: string;
-    tags: Tag[];
+    tags: string[];
     updated: string;
 }
 
@@ -130,7 +130,7 @@ export interface Event {
         id: number;
         name: string;
     }
-    tags: [];
+    tags: Tag[];
 }
 
 export interface EventDates {
@@ -249,7 +249,7 @@ export interface PlaceV2 {
         id: number;
         name: string;
     }
-    tags?: [];
+    tags: Tag[];
 }
 
 export interface Price {

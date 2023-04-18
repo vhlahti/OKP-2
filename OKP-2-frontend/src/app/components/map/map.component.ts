@@ -158,13 +158,15 @@ export class MapComponent implements OnInit {
             const image = activity.media[0]?.originalUrl;
             const url = activity.storeUrl;
             const about = activity.descriptions["fi"]?.description ?? activity.descriptions["en"]?.description;
+            const tags = activity.tags;
             this.activityLocations.push({
               position: { lat, lng: long },
               name,
               address: { street_address: streetName, postal_code: postalCode, city},
               image,
               url,
-              about
+              about,
+              tags
             });
             }
             console.log(this.activityLocations);
@@ -185,13 +187,15 @@ export class MapComponent implements OnInit {
         const image = event.description.images.length > 0 ? event.description.images[0].url : null;
         const url = event.info_url;
         const about = event.description.intro;
+        const tags = event.tags.map(tag => tag.name);
         this.eventLocations.push({
           position: { lat, lng: lon },
           name,
           address: { street_address, postal_code, city: locality},
           image,
           url,
-          about
+          about,
+          tags
         });
         }
         console.log(this.eventLocations);
@@ -213,13 +217,15 @@ export class MapComponent implements OnInit {
             const image = place.description.images.length > 0 ? place.description.images[0].url : null;
             const url = place.info_url;
             const about = place.description.intro;
+            const tags = place.tags.map(tag => tag.name);
             this.placeLocations.push({
               position: { lat, lng: lon },
               name,
               address: { street_address, postal_code, city: locality},
               image,
               url,
-              about
+              about,
+              tags
             });
             }
             console.log(this.placeLocations);
