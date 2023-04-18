@@ -11,6 +11,7 @@
   [title]="userTitle">
 </map-marker>
 
+<div *ngIf="showActivitiesMarkers">
 <map-marker #activityMarker="mapMarker"
   *ngFor="let activity of activityLocations"
   [position]="activity.position"
@@ -18,7 +19,9 @@
   [title]="activity.name"
   (mapClick)="openInfoWindow(activityMarker, activity)">
 </map-marker>
+</div>
 
+<div *ngIf="showEventsMarkers">
 <map-marker #eventMarker="mapMarker"
   *ngFor="let event of eventLocations"
   [position]="event.position"
@@ -26,7 +29,9 @@
   [title]="event.name"
   (mapClick)="openInfoWindow(eventMarker, event)">
 </map-marker>
+</div>
 
+<div *ngIf="showPlacesMarkers">
 <map-marker #placeMarker="mapMarker"
   *ngFor="let place of placeLocations"
   [position]="place.position"
@@ -34,6 +39,7 @@
   [title]="place.name"
   (mapClick)="openInfoWindow(placeMarker, place)">
 </map-marker>
+</div>
 
 <map-info-window #infoWindow="mapInfoWindow"
   [options]="infoWindowOptions">

@@ -7,6 +7,7 @@ import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
 import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-solid-svg-icons';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-map',
@@ -22,6 +23,11 @@ export class MapComponent implements OnInit {
   faMasksTheater = faMasksTheater;
   userTitle = "Sijaintisi";
   selectedMarker: any;
+
+  // switch case rules
+  public showPlacesMarkers = true;
+  public showActivitiesMarkers = true;
+  public showEventsMarkers = true;
 
   // api and coordinate data
   activities: ActivityV2[] = [];
@@ -100,7 +106,8 @@ export class MapComponent implements OnInit {
     // optional settings here
   }
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService,
+              private sharedService: SharedService) {}
 
   ngOnInit(): void {
     // set helsinki city center as default location
@@ -115,6 +122,7 @@ export class MapComponent implements OnInit {
     this.getActivitiesData();
     this.getEventsData();
     this.getPlacesData();
+    this.switchCase()
   }
 
   getUserLocation() {
@@ -220,6 +228,33 @@ export class MapComponent implements OnInit {
   openInfoWindow(marker, activity) {
     this.selectedMarker = activity;
     this.infoWindow.open(marker);
+  }
+
+  switchCase() {
+    this.sharedService.getCurrentCase().subscribe(caseValue => {
+      switch (caseValue) {
+        case "places":
+          this.showPlacesMarkers = true;
+          this.showActivitiesMarkers = false;
+          this.showEventsMarkers = false;
+          break;
+  
+        case "activities":
+          this.showPlacesMarkers = false;
+          this.showActivitiesMarkers = true;
+          this.showEventsMarkers = false;
+          break;
+  
+        case "events":
+          this.showPlacesMarkers = false;
+          this.showActivitiesMarkers = false;
+          this.showEventsMarkers = true;
+          break;
+      
+        default:
+          break;
+      }
+    });
   }
 
 }

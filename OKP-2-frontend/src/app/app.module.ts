@@ -13,6 +13,7 @@ import { DataService } from './services/data.service';
 import { ListActivitiesComponent } from './components/list-activities/list-activities.component';
 import { ListPlacesComponent } from './components/list-places/list-places.component';
 import { ListEventsComponent } from './components/list-events/list-events.component';
+import { SharedService } from './services/shared.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { ListEventsComponent } from './components/list-events/list-events.compon
     GoogleMapsModule,
     FontAwesomeModule
   ],
-  providers: [DataService],
+  providers: [DataService, SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
