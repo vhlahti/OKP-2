@@ -43,7 +43,8 @@ export class MapComponent implements OnInit {
   width = '100%';
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
-    // additional settings here
+    maxZoom: 18,
+    minZoom: 5
   };
 
   // user marker settings
@@ -228,6 +229,12 @@ export class MapComponent implements OnInit {
   openInfoWindow(marker, activity) {
     this.selectedMarker = activity;
     this.infoWindow.open(marker);
+    this.zoomIn();
+
+    // set zoom back to default when info window is closed
+    this.infoWindow.closeclick.subscribe(() => {
+      this.zoom = 13;
+    });
   }
 
   switchCase() {
@@ -255,6 +262,10 @@ export class MapComponent implements OnInit {
           break;
       }
     });
+  }
+
+  zoomIn() {
+    if (this.zoom < this.options.maxZoom) this.zoom++;
   }
 
 }
