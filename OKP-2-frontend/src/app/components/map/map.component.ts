@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { APIResponse } from 'src/app/models/IApiResponse';
 import { ActivityV2 } from 'src/app/models/helsinki-api-model';
@@ -6,6 +6,7 @@ import { Event } from 'src/app/models/helsinki-api-model';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
 import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-solid-svg-icons';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'app-map',
@@ -14,9 +15,13 @@ import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-so
 })
 export class MapComponent implements OnInit {
 
+  @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
+
   faLandmark = faLandmark; 
   faPersonBiking = faPersonBiking;
   faMasksTheater = faMasksTheater;
+  userTitle = "Sijaintisi";
+  selectedMarker: any;
 
   // api and coordinate data
   activities: ActivityV2[] = [];
@@ -37,6 +42,10 @@ export class MapComponent implements OnInit {
 
   // user marker settings
   userCurrentLocation = false;
+
+  userMarkerOptions: google.maps.MarkerOptions = {
+    // 
+  };
 
   // activity marker settings
   activityMarkerOptions: google.maps.MarkerOptions = {
@@ -86,6 +95,11 @@ export class MapComponent implements OnInit {
     }
   };
 
+  // marker info window settings
+  infoWindowOptions: google.maps.InfoWindowOptions = {
+    // optional settings here
+  }
+
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
@@ -131,7 +145,18 @@ export class MapComponent implements OnInit {
         for (const activity of this.activities) {
             const { lat, long } = activity.address.location;
             const name = activity.descriptions["fi"]?.name ?? activity.descriptions["en"]?.name;
-            this.activityLocations.push({ position: { lat, lng: long }, name });
+            const { streetName, postalCode, city } = activity.address;
+            const image = activity.media[0]?.originalUrl;
+            const url = activity.storeUrl;
+            const about = activity.descriptions["fi"]?.description ?? activity.descriptions["en"]?.description;
+            this.activityLocations.push({
+              position: { lat, lng: long },
+              name,
+              address: { street_address: streetName, postal_code: postalCode, city},
+              image,
+              url,
+              about
+            });
             }
             console.log(this.activityLocations);
     });
@@ -147,7 +172,18 @@ export class MapComponent implements OnInit {
         for (const event of this.events) {
         const { lat, lon } = event.location;
         const name = event.name.fi ?? event.name.en;
-        this.eventLocations.push({ position: { lat, lng: lon }, name });
+        const { street_address, postal_code, locality } = event.location.address;
+        const image = event.description.images.length > 0 ? event.description.images[0].url : null;
+        const url = event.info_url;
+        const about = event.description.intro;
+        this.eventLocations.push({
+          position: { lat, lng: lon },
+          name,
+          address: { street_address, postal_code, city: locality},
+          image,
+          url,
+          about
+        });
         }
         console.log(this.eventLocations);
     });
@@ -163,10 +199,27 @@ export class MapComponent implements OnInit {
         for (const place of this.places) {
             const { lat, lon } = place.location;
             const name = place.name.fi ?? place.name.en;
-            this.placeLocations.push({ position: { lat, lng: lon }, name });
+            const { street_address, postal_code, locality } = place.location.address;
+            // const image = place.description.images[0].url;
+            const image = place.description.images.length > 0 ? place.description.images[0].url : null;
+            const url = place.info_url;
+            const about = place.description.intro;
+            this.placeLocations.push({
+              position: { lat, lng: lon },
+              name,
+              address: { street_address, postal_code, city: locality},
+              image,
+              url,
+              about
+            });
             }
             console.log(this.placeLocations);
     });
+  }
+
+  openInfoWindow(marker, activity) {
+    this.selectedMarker = activity;
+    this.infoWindow.open(marker);
   }
 
 }
