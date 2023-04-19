@@ -45,3 +45,6 @@ th {
   padding: 0.5rem 1.5rem 0;
   border-collapse: separate;
 }
+.frame {
+  margin: 1rem;
+}

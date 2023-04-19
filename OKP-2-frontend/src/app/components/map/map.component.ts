@@ -26,8 +26,8 @@ export class MapComponent implements OnInit {
 
   // switch case rules
   public showPlacesMarkers = true;
-  public showActivitiesMarkers = true;
-  public showEventsMarkers = true;
+  public showActivitiesMarkers = false;
+  public showEventsMarkers = false;
 
   // api and coordinate data
   activities: ActivityV2[] = [];
