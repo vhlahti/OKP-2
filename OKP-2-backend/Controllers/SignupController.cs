@@ -7,8 +7,7 @@ namespace backend.Controllers;
 
 using BCrypt.Net;
 
-[Route("api/[Controller]")]
-[Route("api/[Controller]/[action]")]
+[Route("api")]
 [ApiController]
 public class SignupController : ControllerBase
 {
@@ -19,8 +18,7 @@ public class SignupController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
-    [Route("")]
+    [HttpPost("signup")]
     public IActionResult Singup([FromForm] AuthRequest signup)
     {
         var errors = new List<string>();

@@ -7,8 +7,7 @@ namespace backend.Controllers;
 
 using BCrypt.Net;
 
-[Route("api/[Controller]")]
-[Route("api/[Controller]/[action]")]
+[Route("api")]
 [ApiController]
 public class LoginController : ControllerBase
 {
@@ -19,8 +18,7 @@ public class LoginController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
-    [Route("")]
+    [HttpPost("login")]
     public IActionResult Login([FromForm] AuthRequest login)
     {
         var errors = new List<string>();
