@@ -1,23 +1,28 @@
 .container {
-    margin: 0.5rem
-  }
+  padding: 0.2rem 0.5rem 0 0.5rem;
+}
+
+h4 {
+  margin: 0.5rem 0 0 0;
+  font-weight: bold;
+}
   
-  h2 {
-    margin: 0;
-    font-weight: bold;
-  }
+.address {
+  font-weight: bold;
+}
   
-  .address {
-    font-weight: bold;
-  }
+img {
+  height: auto;
+  max-width: 200px;
+  float: right;
+  padding: 0 0 0.5rem 0.5rem;
+}
   
-  img {
-      height: auto;
-      max-width: 200px;
-      float: right;
-      padding: 0 0 0.5rem 0.5rem;
-  }
-  
-  .tags {
-    font-style: italic;
-  }
+.tags {
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.text {
+   margin-top: 1rem;
+}

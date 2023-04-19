@@ -13,8 +13,8 @@
 
 <div *ngIf="showActivitiesMarkers">
 <map-marker #activityMarker="mapMarker"
-  *ngFor="let activity of activityLocations"
-  [position]="activity.position"
+  *ngFor="let activity of activityLocations; let i = index"
+  [position]="{ lat: activity.position.lat + i * 0.001, lng: activity.position.lng + i * 0.001 }"
   [options]="activityMarkerOptions"
   [title]="activity.name"
   (mapClick)="openInfoWindow(activityMarker, activity)">
@@ -23,8 +23,8 @@
 
 <div *ngIf="showEventsMarkers">
 <map-marker #eventMarker="mapMarker"
-  *ngFor="let event of eventLocations"
-  [position]="event.position"
+  *ngFor="let event of eventLocations; let i = index"
+  [position]="{ lat: event.position.lat + i * 0.001, lng: event.position.lng + i * 0.001 }"
   [options]="eventMarkerOptions"
   [title]="event.name"
   (mapClick)="openInfoWindow(eventMarker, event)">
@@ -33,8 +33,8 @@
 
 <div *ngIf="showPlacesMarkers">
 <map-marker #placeMarker="mapMarker"
-  *ngFor="let place of placeLocations"
-  [position]="place.position"
+  *ngFor="let place of placeLocations; let i = index"
+  [position]="{ lat: place.position.lat + i * 0.001, lng: place.position.lng + i * 0.001 }"
   [options]="placeMarkerOptions"
   [title]="place.name"
   (mapClick)="openInfoWindow(placeMarker, place)">
@@ -44,7 +44,7 @@
 <map-info-window #infoWindow="mapInfoWindow"
   [options]="infoWindowOptions">
   <div class="container" *ngIf="selectedMarker">
-    <h2>{{ selectedMarker.name }}</h2>
+    <h4>{{ selectedMarker.name }}</h4>
     <article class="text">
       <img src="{{ selectedMarker.image }}" alt="">
       <p>{{ selectedMarker.about }}</p>
