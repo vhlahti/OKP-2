@@ -9,8 +9,7 @@ import { APIResponse } from 'src/app/models/IApiResponse';
   styleUrls: ['./list-events.component.css']
 })
 export class ListEventsComponent implements OnInit {
-
-    events: Event[] = [];
+    events: Event[];
 
     constructor(private dataService: DataService) { }
 
@@ -28,5 +27,4 @@ export class ListEventsComponent implements OnInit {
     getEvent(event: Event) {
         return event.name.fi ?? event.name.en;
     }
-
 }

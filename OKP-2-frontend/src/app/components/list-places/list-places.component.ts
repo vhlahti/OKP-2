@@ -10,7 +10,7 @@ import { APIResponse } from 'src/app/models/IApiResponse';
 })
 export class ListPlacesComponent implements OnInit {
 
-    places: PlaceV2[] = [];
+    places: PlaceV2[];
 
     constructor(private dataService: DataService) { }
 

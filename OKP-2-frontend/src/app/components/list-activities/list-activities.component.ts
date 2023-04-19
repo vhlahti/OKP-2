@@ -10,7 +10,7 @@ import { APIResponse } from 'src/app/models/IApiResponse';
 })
 export class ListActivitiesComponent implements OnInit {
 
-    activities: ActivityV2[] = [];
+    activities: ActivityV2[];
 
     constructor(private dataService: DataService) { }
 

@@ -1,3 +1,90 @@
+export interface Address {
+    streetAddress: string;
+    postalCode: string;
+    locality: string;
+    neighbourhood: string;
+    location: Location;
+}
+
+export interface Location {
+    lat: number;
+    long: number;
+}
+
+export interface DescriptionTranslated {
+    intro: string;
+    body: string;
+    images: Image[];
+}
+
+export interface Event {
+    id: string;
+    name: Name;
+    sourceType: SourceType;
+    infoUrl: string;
+    modifiedAt: string;
+    location: Location;
+    description: DescriptionTranslated;
+    tags: Tag[];
+    eventDates: EventDates;
+}
+
+export interface EventDates {
+    startingDay: string;
+    endingDay: string;
+    additionalDescription: Description[];
+}
+
+export interface Image {
+    url: string;
+    copyrightHolder: string;
+    licenseType: License_type;
+    media_id: string;
+}
+
+export interface License_type { }
+
+export interface Location {
+    lat: number;
+    lon: number;
+    address: Address;
+}
+
+export interface Name {
+    fi: string;
+    en: string;
+    sv: string;
+    zh: string;
+}
+
+export interface SourceType { }
+
+export interface Tag {
+    id: string;
+    name: string;
+}
+
+export interface Name {
+    fi: string;
+    en: string;
+    sv: string;
+    zh: string;
+}
+
+export interface SourceType {
+    // Define properties here
+}
+
+export interface Tag {
+    id: string;
+    name: string;
+}
+
+export interface TranslatedString {
+    langCode: string;
+    text: string;
+}
+
 export interface Activity {
     id: string;
     name: Name;
@@ -14,53 +101,28 @@ export interface Activity {
     whereWhenDuration: WhereWhenDurationTranslated;
 }
 
-export interface ActivityV2 {
-    address: {
-        city: string;
-        location: {
-            lat: number;
-            long: number;}
-        postalCode: string;
-        streetName: string;
-    }
-    availableMonths: [];
-    company: {
-        businessId: string;
-        email: string;
-        name: string;
-        phone: string;
-    }
-    descriptions: {
-        en: {
-            description: string;
-            name: string;
-        }
-        fi: {
-            description: string;
-            name: string;
-        }
-    }
+export interface WhereWhenDurationTranslated {
+    whereAndWhen: string;
     duration: string;
-    durationType: string;
-    id: string;
-    meantFor: [];
-    media: [{
-        originalUrl: string;
-    }]
-    open: { [key: string]: boolean };
-    priceEUR: Price;
-    siteUrl: string;
-    storeUrl: string;
-    tags: string[];
-    updated: string;
 }
 
-export interface Address {
-    streetAddress: string;
-    postalCode: string;
-    locality: string;
-    neighbourhood: string;
-    location: Location;
+export interface ActivityV2 {
+    id: string;
+    updated: string;
+    descriptions: { [key: string]: Description };
+    company: Company;
+    open: { [key: string]: boolean };
+    media: Image[];
+    address: Address;
+    companyAddress: Address;
+    tags: Tag[];
+    siteUrl?: string;
+    storeUrl?: string;
+    priceEUR: Price;
+    availableMonths: string[];
+    meantFor: string[];
+    duration: string;
+    durationType: string;
 }
 
 export interface AllItemsResponse {
@@ -88,73 +150,6 @@ export interface Description {
     storeUrl?: string;
 }
 
-export interface DescriptionTranslated {
-    intro: string;
-    body: string;
-    images: Image[];
-}
-
-export interface Event {
-    description: {
-        body: string;
-        images: [
-            {
-                url: string;
-            }
-        ]
-        intro: string;
-    }
-    event_dates: {
-        additional_description?: string;
-        ending_day: string;
-        starting_day: string;
-    }
-    id: string;
-    info_url: string;
-    location: {
-        address: {
-            locality: string;
-            neighbourhood?: string;
-            postal_code: string;
-            street_address: string;
-        }
-        lat: number;
-        lon: number;
-    }
-    modified_at: string;
-    name: {
-        en: string;
-        fi: string;
-    }
-    source_type: {
-        id: number;
-        name: string;
-    }
-    tags: Tag[];
-}
-
-export interface EventDates {
-    startingDay: string;
-    endingDay: string;
-    additionalDescription: Description[];
-}
-
-export interface Image {
-    url: string;
-    copyrightHolder: string;
-    licenseType: License_type;
-    media_id: string;
-}
-
-export interface License_type { }
-
-export interface Location {
-    position: {
-        lat: number;
-        lng: number;
-    }
-}
-
 export interface Media {
     id: string;
     kind: string;
@@ -166,11 +161,16 @@ export interface Media {
     largeUrl?: string;
 }
 
-export interface Name {
-    fi: string;
-    en: string;
-    sv: string;
-    zh: string;
+export interface OpeningHours {
+    open: boolean;
+    from?: string;
+    to?: string;
+}
+
+export interface Price {
+    from: number; // type of from is unspecified in the mockup
+    to: number; // type of to is unspecified in the mockup
+    pricingType?: string;
 }
 
 export interface OpeningHour {
@@ -178,12 +178,6 @@ export interface OpeningHour {
     opens: OpeningHourTime;
     closes: OpeningHourTime;
     open24h?: boolean;
-}
-
-export interface OpeningHours {
-    open: boolean;
-    from?: string;
-    to?: string;
 }
 
 export interface OpeningHourTime {
@@ -211,68 +205,14 @@ export interface Place {
 }
 
 export interface PlaceV2 {
-    description: {
-        body: string;
-        images: [
-            {
-                url: string;
-                copyright_holder: string;
-                license_type: {
-                    id: number;
-                    name: string;
-                }
-                media_id: string;
-            }
-        ]
-        intro: string;
-    }
-    extra_searchwords?: [];
     id: string;
-    info_url: string;
-    location: {
-        address: {
-            locality: string;
-            neighbourhood: string;
-            postal_code: string;
-            street_address: string;
-        }
-        lat: number;
-        lon: number;
-    };
-    modified_at: string;
-    name: {
-        en: string;
-        fi: string;
-    }
-    opening_hours_url: string;
-    source_type: {
-        id: number;
-        name: string;
-    }
-    tags: Tag[];
-}
-
-export interface Price {
-    from: number; // type of from is unspecified in the mockup
-    to: number; // type of to is unspecified in the mockup
-    pricingType?: string;
-}
-
-export interface SourceType {
-    // Define properties here
-}
-
-export interface Tag {
-    id: string;
-    name: string;
-}
-
-export interface TranslatedString {
-    langCode: string;
-    text: string;
-}
-
-export interface WhereWhenDurationTranslated {
-    whereAndWhen: string;
-    duration: string;
+    name: Name;
+    sourceType: SourceType;
+    infoUrl?: string;
+    modifiedAt: string;
+    location: Location;
+    description: DescriptionTranslated;
+    tags?: string[]; // type of the tags array is unspecified in the mockup
+    extra_searchwords?: string[]; // type of the extra_searchwords array is unspecified in the mockup
+    openingHoursUrl?: string;
 }
