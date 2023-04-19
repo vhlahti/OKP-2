@@ -10,10 +10,7 @@ import { MapComponent } from './components/map/map.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DataService } from './services/data.service';
-import { ListActivitiesComponent } from './components/list-activities/list-activities.component';
-import { ListPlacesComponent } from './components/list-places/list-places.component';
-import { ListEventsComponent } from './components/list-events/list-events.component';
-import { SharedService } from './services/shared.service';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   declarations: [
