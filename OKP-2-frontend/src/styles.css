@@ -9,20 +9,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0 1rem;
-}
-
-.button-user {
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  right: 4rem;
-}
-
-.button-bar {
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  right: 2rem;
+  justify-content: space-between;
 }
 
 h2,
@@ -57,14 +44,4 @@ th {
   text-align: center;
   padding: 0.5rem 1.5rem 0;
   border-collapse: separate;
-}
-
-.button {
-  display: inline-flex;
-  cursor: pointer;
-}
-
-.button:hover {
-  opacity: 0.8;
-  font-weight: normal;
 }
