@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+    db:
+        image: postgres:alpine
+        restart: always
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DATABASE: postgres
+        ports:
+            - '5432:5432'
+        volumes:
+            - db:/var/lib/postgresql/data
+            - ./db.sql:/docker-entrypoint-initdb.d/db.sql
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 5433:8080
+
+    app:
+        build: .
+        ports:
+            - '7266:7266'
+            - '5121:5121'
+        environment:
+            DB_HOST: db
+            JWT_SECRET: aGVsbG8gd29ybGQ= # Development (not very secret) secret
+        depends_on:
+            - db
+
+volumes:
+    db:
+        driver: local

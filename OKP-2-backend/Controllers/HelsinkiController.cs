@@ -5,6 +5,8 @@ using backend.Clients;
 
 namespace backend.Controllers;
 
+[Route("api")]
+[ApiController]
 public class HelsinkiController : Controller
 {
     private readonly IHelsinkiClient _helsinkiClient;
@@ -15,15 +17,12 @@ public class HelsinkiController : Controller
     }
 
     [HttpGet]
-    [Route("")]
-    [Route("/api")]
     public async Task<IActionResult> Default()
     {
         return StatusCode(418, "I'm a teapot");
     }
 
-    [HttpGet]
-    [Route("/api/places/")]
+    [HttpGet("places")]
     public IActionResult Places([FromQuery] HelsinkiFilters filters)
     {
         var address = "v2/places/";
@@ -31,8 +30,7 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    [HttpGet]
-    [Route("/api/place/{id}")]
+    [HttpGet("place/{id}")]
     public IActionResult Place([FromQuery] HelsinkiFilters filters, int id)
     {
         var address = $"v2/place/{id}";
@@ -40,8 +38,7 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    [HttpGet]
-    [Route("/api/activities/")]
+    [HttpGet("activities")]
     public IActionResult Activities([FromQuery] HelsinkiFilters filters)
     {
         var address = "v2/activities";
@@ -49,8 +46,7 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    [HttpGet]
-    [Route("/api/activity/{id}")]
+    [HttpGet("activity/{id}")]
     public IActionResult Activity([FromQuery] HelsinkiFilters filters, int id)
     {
         var address = $"v2/activity/{id}";
@@ -58,8 +54,7 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    [HttpGet]
-    [Route("/api/events/")]
+    [HttpGet("events")]
     public IActionResult Events([FromQuery] HelsinkiFilters filters)
     {
         var address = "v1/events/";
@@ -68,8 +63,7 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    [HttpGet]
-    [Route("/api/event/{id}")]
+    [HttpGet("event/{id}")]
     public IActionResult Event([FromQuery] HelsinkiFilters filters, int id)
     {
         var address = $"v1/event/{id}";
@@ -77,10 +71,11 @@ public class HelsinkiController : Controller
         return Ok(new { Data = data });
     }
 
-    public string UriBuilder(HelsinkiFilters filters, string address)
+    private string UriBuilder(HelsinkiFilters filters, string address)
     {
         // Append filters as query string parameters
         var queryParams = new List<string>();
+        string url = address;
 
         if (!string.IsNullOrEmpty(filters.limit)) queryParams.Add($"limit={HttpUtility.UrlEncode(filters.limit)}");
         if (!string.IsNullOrEmpty(filters.start)) queryParams.Add($"start={HttpUtility.UrlEncode(filters.start)}");
@@ -89,8 +84,10 @@ public class HelsinkiController : Controller
         if (!string.IsNullOrEmpty(filters.distance_filter)) queryParams.Add($"distance_filter={HttpUtility.UrlEncode(filters.distance_filter)}");
         if (!string.IsNullOrEmpty(filters.language_filter)) queryParams.Add($"language_filter={HttpUtility.UrlEncode(filters.language_filter)}");
 
-        string queryString = string.Join("&", queryParams);
-        string url = address + "?" + queryString;
+        if (queryParams.Any()) {
+            string queryString = string.Join("&", queryParams);
+            url += "?" + queryString;
+        }
 
         return url;
     }
