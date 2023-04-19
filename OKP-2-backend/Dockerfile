@@ -14,7 +14,7 @@ RUN dotnet dev-certs https --clean && \
     dotnet dev-certs https -ep ./https/aspnetapp.pfx -p password && \
     dotnet dev-certs https --trust
 
-RUN dotnet publish . -c Release -o /backend/out
+RUN dotnet publish . -c Release -o ./out
 
 # Build the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
@@ -39,4 +39,4 @@ EXPOSE 7266
 EXPOSE 5121
 
 # Start the backend
-ENTRYPOINT ["dotnet", "backend.dll"]
+ENTRYPOINT ["dotnet", "OKP-2-backend.dll"]
