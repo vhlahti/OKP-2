@@ -13,18 +13,14 @@ export class DataService {
   apiUrl = 'https://localhost:7266/api/';
 
   getActivities() {
-    return this.http.get(this.apiUrl + "activities?limit=3")
+    return this.http.get(this.apiUrl + "activities?limit=10")
   }
 
   getEvents() {
-    return this.http.get(this.apiUrl + "events?limit=3")
+    return this.http.get(this.apiUrl + "events?limit=10")
   }
 
   getPlaces() {
-    return this.http.get(this.apiUrl + "places?limit=3")
-  }
-
-  getISS() {
-    return this.http.get(this.issUrl);
+    return this.http.get(this.apiUrl + "places?limit=10")
   }
 }
