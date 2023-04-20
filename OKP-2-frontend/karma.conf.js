@@ -8,41 +8,29 @@ module.exports = function (config) {
     plugins: [
       require("karma-jasmine"),
       require("karma-chrome-launcher"),
-      require("karma-jasmine-html-reporter"),
       require("karma-junit-reporter"),
-      require("karma-coverage"),
       require("@angular-devkit/build-angular/plugins/karma"),
     ],
     client: {
-      jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
-      },
+      jasmine: { },
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
-    },
-    jasmineHtmlReporter: {
-      suppressAll: true, // removes the duplicated traces
-    },
-    coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage/frontend"),
-      subdir: ".",
-      reporters: [{ type: "html" }, { type: "text-summary" }],
     },
     junitReporter: {
       outputDir: "testresults",
     },
     autoWatch: false,
-    singleRun: true,
     restartOnFileChange: false,
-    reporters: ["progress", "kjhtml", "junit"],
-    browsers: ["HeadlessChrome"],
+    reporters: ["junit"],
     customLaunchers: {
       HeadlessChrome: {
         base: "ChromeHeadless",
         flags: ["--no-sandbox"],
       },
     },
+    browsers: ["HeadlessChrome"],
+    browserDisconnectTimeout: 10000, // time (ms) to wait for the browser to disconnect
+    browserDisconnectTolerance: 3, // number of retries before failing
+    browserNoActivityTimeout: 60000, // time (ms) to wait for the browser to start the test run
+    captureTimeout: 60000 // overall time (ms) to wait for the tests to complete
   });
 };
