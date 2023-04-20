@@ -18,8 +18,8 @@ steps:
   # perform unit-tets and publish test and code coverage results
   - script: |
       cd OKP-2-frontend
-      npm install && npm rebuild && npm test
-      npx ng test --no-watch
+      npm install && npm rebuild
+      ng test --no-watch
     displayName: "Perform unit tests"
     continueOnError: true
 
