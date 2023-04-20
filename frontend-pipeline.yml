@@ -19,7 +19,7 @@ steps:
   - script: |
       cd OKP-2-frontend
       npm install && npm rebuild
-      ng test --no-watch
+      npx ng test --no-watch
     displayName: "Perform unit tests"
     continueOnError: true
 
