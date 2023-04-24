@@ -14,6 +14,7 @@ import { ListActivitiesComponent } from './components/list-activities/list-activ
 import { ListPlacesComponent } from './components/list-places/list-places.component';
 import { ListEventsComponent } from './components/list-events/list-events.component';
 import { SharedService } from './services/shared.service';
+import { WeatherComponent } from './components/weather/today.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SharedService } from './services/shared.service';
     HeaderComponent,
     ListActivitiesComponent,
     ListPlacesComponent,
-    ListEventsComponent
+    ListEventsComponent,
+    WeatherComponent
   ],
   imports: [
     BrowserModule,

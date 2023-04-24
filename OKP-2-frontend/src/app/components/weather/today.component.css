@@ -1,0 +1,41 @@
+
+
+.weather-container {
+  background-color: hsl(200, 100%, 85%);
+  width: 30%;
+  padding: 1rem;
+  display: flex;
+  border-radius: 1rem;
+}
+
+.location {
+  font-size: larger;
+  font-weight: lighter;
+}
+
+.forecast-timeline {
+  padding-left: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 3rem);
+  grid-column-gap: 2rem;
+}
+
+.future-icon {
+
+  margin-left: -2rem;
+}
+
+h3 {
+  margin-left: -1rem;
+  margin-bottom: -1rem;
+  grid-column: 1 / -1;
+}
+
+.temp {
+  margin: 0.2rem;
+}
+
+.temp {
+  display: flex;
+  align-items: center;
+}
