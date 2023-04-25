@@ -14,7 +14,7 @@
 <div *ngIf="showActivitiesMarkers">
 <map-marker #activityMarker="mapMarker"
   *ngFor="let activity of activityLocations; let i = index"
-  [position]="{ lat: activity.position.lat + i * 0.001, lng: activity.position.lng + i * 0.001 }"
+  [position]="activity.position"
   [options]="activityMarkerOptions"
   [title]="activity.name"
   (mapClick)="openInfoWindow(activityMarker, activity)">
@@ -24,7 +24,7 @@
 <div *ngIf="showEventsMarkers">
 <map-marker #eventMarker="mapMarker"
   *ngFor="let event of eventLocations; let i = index"
-  [position]="{ lat: event.position.lat + i * 0.001, lng: event.position.lng + i * 0.001 }"
+  [position]="event.position"
   [options]="eventMarkerOptions"
   [title]="event.name"
   (mapClick)="openInfoWindow(eventMarker, event)">
@@ -34,7 +34,7 @@
 <div *ngIf="showPlacesMarkers">
 <map-marker #placeMarker="mapMarker"
   *ngFor="let place of placeLocations; let i = index"
-  [position]="{ lat: place.position.lat + i * 0.001, lng: place.position.lng + i * 0.001 }"
+  [position]="place.position"
   [options]="placeMarkerOptions"
   [title]="place.name"
   (mapClick)="openInfoWindow(placeMarker, place)">
