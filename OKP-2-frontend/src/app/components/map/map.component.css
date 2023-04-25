@@ -14,8 +14,8 @@ h4 {
 img {
   height: auto;
   max-width: 200px;
-  float: right;
-  padding: 0 0 0.5rem 0.5rem;
+  float: none;
+  padding: 0 0 1rem 0;
 }
   
 .tags {
@@ -25,4 +25,12 @@ img {
 
 .text {
    margin-top: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  /* Tablet and bigger: */
+  img {
+    float: right;
+    padding: 0 0 0.5rem 0.5rem;
+  }
 }
