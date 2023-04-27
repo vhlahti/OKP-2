@@ -1,4 +1,3 @@
-using backend.Data;
 using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +11,9 @@ using BCrypt.Net;
 [ApiController]
 public class SignupController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly PostgresContext _context;
 
-    public SignupController(DatabaseContext context)
+    public SignupController(PostgresContext context)
     {
         _context = context;
     }
@@ -30,9 +29,15 @@ public class SignupController : ControllerBase
         {
             errors.Add("Name field cannot be empty");
         }
-        else if (string.IsNullOrWhiteSpace(signup.Password))
+
+        if (string.IsNullOrWhiteSpace(signup.Password))
         {
             errors.Add("Password field cannot be empty");
+        }
+
+        if (errors.Count > 0)
+        {
+            return BadRequest(new { status = "Error", errors = errors });
         }
 
         // Hash the password
@@ -49,28 +54,28 @@ public class SignupController : ControllerBase
         // Check if name is already taken
         bool usernameTaken = this._context.Users
             .Any(u => u.Name == signup.Name);
-
+        
         if (usernameTaken)
         {
             errors.Add("Username has already been taken");
         }
-
+        
         // Return errors if any
         if (errors.Count > 0)
         {
             return Ok(new { status = "Error", errors = errors });
         }
-
+        
         // Add user to database
-        User user = new User(signup.Name!, passwordHash);
+        User user = new User{ Name = signup.Name!, Password = passwordHash };
         this._context.Users.Add(user);
         this._context.SaveChanges();
-
+        
         // Generate JWT
         IAuthContainerModel model = JWTService.GetJWTContainerModel(signup.Name!, "user");
         IAuthService authService = new JWTService(model.SecretKey);
         string token = authService.GenerateToken(model);
-
+        
         return Ok(new { status = "Success", jwt = token });
     }
 }

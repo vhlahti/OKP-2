@@ -1,4 +1,3 @@
-using backend.Data;
 using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +11,9 @@ using BCrypt.Net;
 [ApiController]
 public class LoginController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly PostgresContext _context;
 
-    public LoginController(DatabaseContext context)
+    public LoginController(PostgresContext context)
     {
         _context = context;
     }
@@ -44,18 +43,18 @@ public class LoginController : ControllerBase
             .Where(user => user.Name == login.Name)
             .Select(user => new { user.Name, user.Password, user.Role })
             .FirstOrDefault();
-
+        
         if (query == null || !BCrypt.EnhancedVerify(login.Password, query.Password))
         {
             errors.Add("Invalid credentials");
             return BadRequest(new { status = "Error", errors = errors });
         }
-
+        
         // Generate JWT
         IAuthContainerModel model = JWTService.GetJWTContainerModel(query.Name!, query.Role ?? "user");
         IAuthService authService = new JWTService(model.SecretKey);
         string token = authService.GenerateToken(model);
-
+        
         return Ok(new { status = "Success", jwt = token });
     }
 }
