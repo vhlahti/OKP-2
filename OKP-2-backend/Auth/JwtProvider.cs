@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Auth;
 
+// Source: https://dotnetcoretutorials.com/creating-and-validating-jwt-tokens-in-asp-net-core/
 public class JwtProvider : IJwtProvider
 {
     private readonly IConfiguration _config;
@@ -17,7 +18,7 @@ public class JwtProvider : IJwtProvider
     public string GenerateToken(string username, string role)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]!));
-    
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -31,8 +32,26 @@ public class JwtProvider : IJwtProvider
             Audience = _config["JwtSettings:Audience"],
             SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
         };
-    
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public string GetClaim(string token, string claimType)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+        var claimValue = securityToken?.Claims.First(claim => claim.Type == claimType).Value ?? "";
+        return claimValue;
+    }
+
+    public Claim[] GetClaims(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+        var claimArray = securityToken?.Claims.ToArray() ?? Array.Empty<Claim>();
+        return claimArray;
     }
 }
