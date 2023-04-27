@@ -1,0 +1,36 @@
+.container {
+  padding: 0.2rem 0.5rem 0 0.5rem;
+}
+
+h4 {
+  margin: 0.5rem 0 0 0;
+  font-weight: bold;
+}
+  
+.address {
+  font-weight: bold;
+}
+  
+img {
+  height: auto;
+  max-width: 200px;
+  float: none;
+  padding: 0 0 1rem 0;
+}
+  
+.tags {
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.text {
+   margin-top: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  /* Tablet and bigger: */
+  img {
+    float: right;
+    padding: 0 0 0.5rem 0.5rem;
+  }
+}

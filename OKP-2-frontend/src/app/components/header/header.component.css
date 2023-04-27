@@ -1,0 +1,23 @@
+.btn {
+  color: white;
+}
+.dropdownmenu a:before {
+  font-family: fontawesome;
+  font-weight: normal;
+}
+.dropdownmenu a:hover {
+  color: #e0e0e0;
+  cursor: pointer;
+}
+.dropdownmenu a:checked {
+  filter: drop-shadow(0 0 6px #e2e2e2);
+}
+h4 {
+  margin: 0;
+}
+.logo-container{
+  margin: 0.5rem 0 0.5rem 0;
+}
+.logo {
+  margin-right: 0.5rem;
+}

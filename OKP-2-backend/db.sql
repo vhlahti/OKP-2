@@ -1,4 +1,5 @@
 /* *************** Users *************** */
+<<<<<<< HEAD
 CREATE TABLE "public"."users" (
     "name" character varying(16) NOT NULL,
     "password" character varying(64) NOT NULL,
