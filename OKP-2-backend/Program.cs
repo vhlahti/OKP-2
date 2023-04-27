@@ -1,4 +1,6 @@
 using backend.Clients;
+using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 string[] origins = { "http://localhost:4200", "https://localhost:4200" };
@@ -12,9 +14,9 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<IHelsinkiClient, HelsinkiClient>(client =>
-{
-    client.BaseAddress = new Uri("https://open-api.myhelsinki.fi/");
-});
+    client.BaseAddress = new Uri("https://open-api.myhelsinki.fi/"));
+builder.Services.AddDbContext<PostgresContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresContext")));
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
