@@ -39,4 +39,4 @@ EXPOSE 7266
 EXPOSE 5121
 
 # Start the backend
-ENTRYPOINT ["dotnet", "backend.dll"]
+ENTRYPOINT ["dotnet", "OKP-2-backend.dll"]
