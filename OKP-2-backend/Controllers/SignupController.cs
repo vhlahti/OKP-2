@@ -1,4 +1,3 @@
-using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +11,12 @@ using BCrypt.Net;
 public class SignupController : ControllerBase
 {
     private readonly PostgresContext _context;
+    private readonly IJwtProvider _jwt;
 
-    public SignupController(PostgresContext context)
+    public SignupController(PostgresContext context, IJwtProvider jwt)
     {
         _context = context;
+        _jwt = jwt;
     }
 
     [HttpPost]
@@ -72,9 +73,7 @@ public class SignupController : ControllerBase
         this._context.SaveChanges();
         
         // Generate JWT
-        IAuthContainerModel model = JWTService.GetJWTContainerModel(signup.Name!, "user");
-        IAuthService authService = new JWTService(model.SecretKey);
-        string token = authService.GenerateToken(model);
+        var token = _jwt.GenerateToken(signup.Name!, "user");
         
         return Ok(new { status = "Success", jwt = token });
     }

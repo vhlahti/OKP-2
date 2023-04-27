@@ -1,4 +1,3 @@
-using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +11,12 @@ using BCrypt.Net;
 public class LoginController : ControllerBase
 {
     private readonly PostgresContext _context;
+    private readonly IJwtProvider _jwt;
 
-    public LoginController(PostgresContext context)
+    public LoginController(PostgresContext context, IJwtProvider jwt)
     {
         _context = context;
+        _jwt = jwt;
     }
 
     [HttpPost]
@@ -51,9 +52,7 @@ public class LoginController : ControllerBase
         }
         
         // Generate JWT
-        IAuthContainerModel model = JWTService.GetJWTContainerModel(query.Name!, query.Role ?? "user");
-        IAuthService authService = new JWTService(model.SecretKey);
-        string token = authService.GenerateToken(model);
+        var token = _jwt.GenerateToken(login.Name!, query.Role);
         
         return Ok(new { status = "Success", jwt = token });
     }
