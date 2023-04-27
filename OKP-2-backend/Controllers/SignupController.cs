@@ -55,26 +55,33 @@ public class SignupController : ControllerBase
         // Check if name is already taken
         bool usernameTaken = this._context.Users
             .Any(u => u.Name == signup.Name);
-        
+
         if (usernameTaken)
         {
             errors.Add("Username has already been taken");
         }
-        
+
         // Return errors if any
         if (errors.Count > 0)
         {
             return Ok(new { status = "Error", errors = errors });
         }
-        
+
         // Add user to database
-        User user = new User{ Name = signup.Name!, Password = passwordHash };
-        this._context.Users.Add(user);
-        this._context.SaveChanges();
-        
+        try
+        {
+            User user = new User { Name = signup.Name!, Password = passwordHash };
+            this._context.Users.Add(user);
+            this._context.SaveChanges();
+        }
+        catch
+        {
+            return BadRequest("Internal server error");
+        }
+
         // Generate JWT
         var token = _jwt.GenerateToken(signup.Name!, "user");
-        
+
         return Ok(new { status = "Success", jwt = token });
     }
 }
