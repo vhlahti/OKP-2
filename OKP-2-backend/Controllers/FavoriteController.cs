@@ -6,8 +6,7 @@ using Microsoft.Net.Http.Headers;
 namespace backend.Controllers;
 
 [Authorize]
-[Route("api/[Controller]")]
-[Route("api/[Controller]/[action]")]
+[Route("api")]
 [ApiController]
 public class FavoriteController : ControllerBase
 {
@@ -20,8 +19,7 @@ public class FavoriteController : ControllerBase
         _jwt = jwt;
     }
 
-    [HttpPost]
-    [Route("")]
+    [HttpPost("favorites")]
     public IActionResult GetFavorites()
     {
         string token;
@@ -46,9 +44,8 @@ public class FavoriteController : ControllerBase
         return Ok(new { status = "Success", favorites = query });
     }
 
-    [HttpPut]
-    [Route("")]
-    public IActionResult PutFavorite([FromForm] Favorite favorite)
+    [HttpPost("favorite")]
+    public IActionResult SaveFavorite([FromForm] FavoriteRequest request)
     {
         string token;
         try
@@ -62,17 +59,20 @@ public class FavoriteController : ControllerBase
 
         // Name id is somehow automatically derived from
         // ClaimTypes.NameIdentifier which we use in our JWT service
-        favorite.User = _jwt.GetClaim(token, "nameid");
+        request.User = _jwt.GetClaim(token, "nameid");
 
-        try
-        {
+        // Construct full favorite object from request
+        Favorite favorite = new Favorite { User = request.User, Type = request.Type, Id = request.Id };
+
+        /* try */
+        /* { */
             this._context.Favorites.Add(favorite);
             this._context.SaveChanges();
-        }
-        catch
-        {
-            return BadRequest("Internal server error");
-        }
+        /* } */
+        /* catch */
+        /* { */
+        /*     return BadRequest("Internal server error"); */
+        /* } */
 
         return Ok(new { status = "Success" });
     }
