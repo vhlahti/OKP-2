@@ -32,21 +32,21 @@ public partial class PostgresContext : DbContext
     {
         modelBuilder.Entity<Favorite>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("favorites");
+            entity.HasKey(e => new { e.User, e.Id }).HasName("favorites_user_id");
 
+            entity.ToTable("favorites");
+
+            entity.Property(e => e.User)
+                .HasMaxLength(16)
+                .HasColumnName("user");
             entity.Property(e => e.Id)
                 .HasMaxLength(32)
                 .HasColumnName("id");
             entity.Property(e => e.Type)
                 .HasMaxLength(16)
                 .HasColumnName("type");
-            entity.Property(e => e.User)
-                .HasMaxLength(16)
-                .HasColumnName("user");
 
-            entity.HasOne(d => d.UserNavigation).WithMany()
+            entity.HasOne(d => d.UserNavigation).WithMany(p => p.Favorites)
                 .HasForeignKey(d => d.User)
                 .HasConstraintName("favorites_user_fkey");
         });
