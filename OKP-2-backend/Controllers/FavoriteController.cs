@@ -2,6 +2,8 @@ using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
 
@@ -64,15 +66,28 @@ public class FavoriteController : ControllerBase
         // Construct full favorite object from request
         Favorite favorite = new Favorite { User = request.User, Type = request.Type, Id = request.Id };
 
-        /* try */
-        /* { */
+        try
+        {
             this._context.Favorites.Add(favorite);
             this._context.SaveChanges();
-        /* } */
-        /* catch */
-        /* { */
-        /*     return BadRequest("Internal server error"); */
-        /* } */
+        }
+        catch (DbUpdateException ex)
+        {
+            // Handle the database update error here
+            if (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
+            {
+                return BadRequest("Record with this name and id already exists");
+            }
+            else
+            {
+                return BadRequest("Internal server error");
+            }
+        }
+        catch
+        {
+            // Handle other exceptions here
+            return BadRequest("Internal server error");
+        }
 
         return Ok(new { status = "Success" });
     }
