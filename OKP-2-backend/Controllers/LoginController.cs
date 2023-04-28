@@ -1,5 +1,3 @@
-using backend.Data;
-using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +5,22 @@ namespace backend.Controllers;
 
 using BCrypt.Net;
 
-[Route("api")]
+[Route("api/[Controller]")]
+[Route("api/[Controller]/[action]")]
 [ApiController]
 public class LoginController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly PostgresContext _context;
+    private readonly IJwtProvider _jwt;
 
-    public LoginController(DatabaseContext context)
+    public LoginController(PostgresContext context, IJwtProvider jwt)
     {
         _context = context;
+        _jwt = jwt;
     }
 
-    [HttpPost("login")]
+    [HttpPost]
+    [Route("")]
     public IActionResult Login([FromForm] AuthRequest login)
     {
         var errors = new List<string>();
@@ -42,18 +44,10 @@ public class LoginController : ControllerBase
             .Where(user => user.Name == login.Name)
             .Select(user => new { user.Name, user.Password, user.Role })
             .FirstOrDefault();
-
-        if (query == null || !BCrypt.EnhancedVerify(login.Password, query.Password))
-        {
-            errors.Add("Invalid credentials");
-            return BadRequest(new { status = "Error", errors = errors });
-        }
-
+        
         // Generate JWT
-        IAuthContainerModel model = JWTService.GetJWTContainerModel(query.Name!, query.Role ?? "user");
-        IAuthService authService = new JWTService(model.SecretKey);
-        string token = authService.GenerateToken(model);
-
+        var token = _jwt.GenerateToken(login.Name!, query.Role);
+        
         return Ok(new { status = "Success", jwt = token });
     }
 }

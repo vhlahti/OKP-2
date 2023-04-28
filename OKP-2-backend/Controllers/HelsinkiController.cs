@@ -17,9 +17,11 @@ public class HelsinkiController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Default()
+    [Route("")]
+    [Route("/api")]
+    public IActionResult Default()
     {
-        return StatusCode(418, "I'm a teapot");
+        return Ok();
     }
 
     [HttpGet("places")]

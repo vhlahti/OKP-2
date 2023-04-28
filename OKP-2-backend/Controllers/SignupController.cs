@@ -1,5 +1,3 @@
-using backend.Data;
-using backend.Managers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +5,22 @@ namespace backend.Controllers;
 
 using BCrypt.Net;
 
-[Route("api")]
+[Route("api/[Controller]")]
+[Route("api/[Controller]/[action]")]
 [ApiController]
 public class SignupController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly PostgresContext _context;
+    private readonly IJwtProvider _jwt;
 
-    public SignupController(DatabaseContext context)
+    public SignupController(PostgresContext context, IJwtProvider jwt)
     {
         _context = context;
+        _jwt = jwt;
     }
 
-    [HttpPost("signup")]
+    [HttpPost]
+    [Route("")]
     public IActionResult Singup([FromForm] AuthRequest signup)
     {
         var errors = new List<string>();
@@ -28,9 +30,15 @@ public class SignupController : ControllerBase
         {
             errors.Add("Name field cannot be empty");
         }
-        else if (string.IsNullOrWhiteSpace(signup.Password))
+
+        if (string.IsNullOrWhiteSpace(signup.Password))
         {
             errors.Add("Password field cannot be empty");
+        }
+
+        if (errors.Count > 0)
+        {
+            return BadRequest(new { status = "Error", errors = errors });
         }
 
         // Hash the password
@@ -60,14 +68,19 @@ public class SignupController : ControllerBase
         }
 
         // Add user to database
-        User user = new User(signup.Name!, passwordHash);
-        this._context.Users.Add(user);
-        this._context.SaveChanges();
+        try
+        {
+            User user = new User { Name = signup.Name!, Password = passwordHash };
+            this._context.Users.Add(user);
+            this._context.SaveChanges();
+        }
+        catch
+        {
+            return BadRequest("Internal server error");
+        }
 
         // Generate JWT
-        IAuthContainerModel model = JWTService.GetJWTContainerModel(signup.Name!, "user");
-        IAuthService authService = new JWTService(model.SecretKey);
-        string token = authService.GenerateToken(model);
+        var token = _jwt.GenerateToken(signup.Name!, "user");
 
         return Ok(new { status = "Success", jwt = token });
     }

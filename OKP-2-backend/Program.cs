@@ -1,7 +1,16 @@
 using backend.Clients;
+using backend.Models;
+using backend.Auth;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+
 string[] origins = { "http://localhost:4200", "https://localhost:4200" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policyBuilder => policyBuilder
@@ -10,17 +19,37 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         .AllowCredentials());
 });
-builder.Services.AddControllers();
-builder.Services.AddHttpClient<IHelsinkiClient, HelsinkiClient>(client =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
 {
-    client.BaseAddress = new Uri("https://open-api.myhelsinki.fi/");
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["JwtSettings:Issuer"],
+        ValidAudience = config["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+    };
 });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
+builder.Services.AddHttpClient<IHelsinkiClient, HelsinkiClient>(client =>
+    client.BaseAddress = new Uri("https://open-api.myhelsinki.fi/"));
+builder.Services.AddDbContext<PostgresContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresContext")));
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
