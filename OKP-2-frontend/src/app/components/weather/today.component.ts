@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ForecastService } from 'src/app/services/forecast.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-weather',
@@ -12,7 +13,8 @@ export class WeatherComponent implements OnInit{
   location:any;
   currentTime = new Date();
 
-  constructor(private forecastService: ForecastService) {}
+  constructor(private forecastService: ForecastService,
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.forecastService.getWeatherForecast().subscribe(data=>{

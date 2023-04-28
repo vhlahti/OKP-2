@@ -1,28 +1,20 @@
-<section class="weather-container">
-<div *ngIf="weatherNow">
-    <div class="time">{{ currentTime | date:'HH:mm': 'UTC+3'}}</div>
+<div class="weather-container">
+    <div *ngIf="weatherNow">
+        <div class="time">{{ currentTime | date:'HH:mm': 'UTC+3'}} {{ location.name }}</div>
+            <div class="temp">
+            <span><img src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon"></span>
+            <h6 class="temp">{{ weatherNow.main.temp | number:'1.0-0'}} °C</h6>
+            Tuulen nopeus {{ weatherNow.wind.speed | number:'1.0-0'}}m/s.</div>
 
-    <div class="location">{{ location.name }}</div>
-    <div class="temp">
-        <span><img src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon"></span>
-        <h3 class="temp">{{ weatherNow.main.temp | number:'1.0-0'}} °C</h3>
-    </div>
-    <div class="details">
-        <div class="main">
-            Tuntuu kuin {{ weatherNow.main.feels_like | number:'1.0-0'}} °C , {{ weatherNow.weather[0].description }}. Tuulen nopeus {{ weatherNow.wind.speed | number:'1.0-0'}}m/s. 
-        </div>
-    </div>
 
     <!--3-hour Forecast-->
-    <div class="forecast-timeline">
-        <h3>Ennuste:</h3>
-        <div *ngFor="let item of timeline">
-            <img class="future-icon" src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon">
-            <div>{{ item.time | date:'HH:mm':'UTC+6' }}</div>
-            <div>{{ item.temp | number:'1.0-0' }} °C</div>
-            <div>{{ weatherNow.weather.id }} </div>
-            <div>{{ weatherNow.weather[0].description }}</div>
+        <div class="forecast">
+            <div *ngFor="let item of timeline">
+                <img src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon">
+                <div>{{ item.time | date:'HH:mm':'UTC+6' }}</div>
+                <div>{{ item.temp | number:'1.0-0' }} °C</div>
+                <div>{{ weatherNow.weather.id }} </div>
+            </div>
         </div>
     </div>
 </div>
-</section>
