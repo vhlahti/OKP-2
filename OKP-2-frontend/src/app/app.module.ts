@@ -15,6 +15,8 @@ import { ListPlacesComponent } from './components/list-places/list-places.compon
 import { ListEventsComponent } from './components/list-events/list-events.component';
 import { SharedService } from './services/shared.service';
 import { WeatherComponent } from './components/weather/today.component';
+import { ForecastService } from './services/forecast.service';
+import { AccountService } from './services/account.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,7 @@ import { WeatherComponent } from './components/weather/today.component';
     GoogleMapsModule,
     FontAwesomeModule
   ],
-  providers: [DataService, SharedService],
+  providers: [DataService, SharedService, ForecastService, AccountService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
