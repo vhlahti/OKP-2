@@ -120,6 +120,12 @@ export class MapComponent implements OnInit {
     // repeat getUserLocation every 1000 milliseconds
     setInterval(this.getUserLocation, 1000);
 
+    // update new user location
+    this.updateLocation();
+
+    // update #userMarker visibility
+    this.userCurrentLocation = true;
+
     this.getActivitiesData();
     this.getEventsData();
     this.getPlacesData();
@@ -133,8 +139,6 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        // update #userMarker visibility
-        this.userCurrentLocation = true;
       },
       (error) => {
         console.log('Error getting user location:', error.message);
@@ -272,6 +276,13 @@ export class MapComponent implements OnInit {
 
   zoomIn() {
     if (this.zoom < this.options.maxZoom) this.zoom++;
+  }
+
+  updateLocation() {
+    // send user geolocation coordinates to data service
+    const userLat = this.center.lat;
+    const userLng = this.center.lng;
+    this.dataService.updateUserLocation(userLat, userLng);
   }
 
 }
