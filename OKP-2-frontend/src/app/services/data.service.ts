@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class DataService {
   distance = 0.5; // distance radius from user location
   limit = 50; // limits shown results if limitPath is used
 
-  apiUrl = 'https://localhost:7266/api/';
+  apiUrl = environment.apiUrl;
   filterPath = `?distance_filter=${this.lat},${this.lng},${this.distance}`;
   limitPath = `?&limit=${this.limit}`; // optional
 
