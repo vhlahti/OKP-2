@@ -1,6 +1,18 @@
 <div class="frame">
-<h3>Events</h3>
-<section *ngFor="let event of events; index as i">
-    <p>{{ i + 1 }}. {{ getEvent(event) }}</p>
-</section>
+  <h3>Events</h3>
+  <section *ngFor="let event of events; index as i">
+    <div class="card py-3 my-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ getEventName(event) }}</h5>
+        <p class="card-text">{{ getEventDescription(event) }}</p>
+        <a href="#" class="btn btn-primary me-1">Näytä kartalla</a>
+        <a
+          *ngIf="getEventHasLink(event)"
+          href="{{ getEventLink(event) }}"
+          class="btn btn-primary"
+          >Kotisivut</a
+        >
+      </div>
+    </div>
+  </section>
 </div>
