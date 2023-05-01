@@ -111,24 +111,12 @@ export class MapComponent implements OnInit {
               private sharedService: SharedService) {}
 
   ngOnInit(): void {
-    // set helsinki city center as default location
-    this.center = { lat: 60.172727, lng: 24.939491 };
-
     // get user's current location and keep track of it via geolocation api
     this.getUserLocation();
-
-    // repeat getUserLocation every 1000 milliseconds
-    setInterval(this.getUserLocation, 1000);
-
-    // update new user location
-    this.updateLocation();
 
     // update #userMarker visibility
     this.userCurrentLocation = true;
 
-    this.getActivitiesData();
-    this.getEventsData();
-    this.getPlacesData();
     this.switchCase()
   }
 
@@ -139,9 +127,24 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        this.updateLocation();
+        console.log(this.center);
+
+        this.getActivitiesData();
+        this.getEventsData();
+        this.getPlacesData();
       },
       (error) => {
         console.log('Error getting user location:', error.message);
+        // set helsinki city center as location if user denies geolocation
+        this.center = { lat: 60.172727, lng: 24.939491 };
+        this.updateLocation();
+        console.log(this.center);
+
+        this.getActivitiesData();
+        this.getEventsData();
+        this.getPlacesData();
+
       });
     } else {
       console.log('Geolocation is not supported by this browser.');
@@ -156,7 +159,7 @@ export class MapComponent implements OnInit {
 
         // fetch the location coordinates and push them to an array
         for (const activity of this.activities) {
-            const { lat, long } = activity.address.location;
+            const { lat, long } = activity.address?.location ?? {};
             const name = activity.descriptions["fi"]?.name ?? activity.descriptions["en"]?.name;
             const { streetName, postalCode, city } = activity.address;
             const image = activity.media[0]?.originalUrl;
@@ -185,7 +188,7 @@ export class MapComponent implements OnInit {
 
         // fetch the location coordinates and push them to an array
         for (const event of this.events) {
-        const { lat, lon } = event.location;
+        const { lat, lon } = event.location ?? {};
         const name = event.name.fi ?? event.name.en;
         const { street_address, postal_code, locality } = event.location.address;
         const image = event.description.images.length > 0 ? event.description.images[0].url : null;
@@ -214,7 +217,7 @@ export class MapComponent implements OnInit {
 
         // fetch the location coordinates and push them to an array
         for (const place of this.places) {
-            const { lat, lon } = place.location;
+            const { lat, lon } = place.location ?? {};
             const name = place.name.fi ?? place.name.en;
             const { street_address, postal_code, locality } = place.location.address;
             // const image = place.description.images[0].url;
