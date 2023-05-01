@@ -13,30 +13,36 @@ export class DataService {
 
   // filter settings
 
-  lat = 60.172727; // helsinki city center as default location
-  lng = 24.939491; // helsinki city center as default location
+  lat: number;
+  lng: number;
   distance = 0.5; // distance radius from user location
   limit = 50; // limits shown results if limitPath is used
 
   apiUrl = environment.apiUrl;
-  filterPath = `?distance_filter=${this.lat},${this.lng},${this.distance}`;
-  limitPath = `?&limit=${this.limit}`; // optional
-
+ 
   // update default location with chosen coordinates
   updateUserLocation(newLat: number, newLng: number) {
     this.lat = newLat;
     this.lng = newLng;
   }
 
+  private filterPath(): string {
+    if (!this.lat || !this.lng) {
+      // lat and/or lng not set yet, return empty filter path
+      return '';
+    }
+    return `?distance_filter=${this.lat},${this.lng},${this.distance}`;
+  }
+
   getActivities() {
-    return this.http.get(this.apiUrl + "activities" + this.filterPath)
+    return this.http.get(this.apiUrl + "activities" + this.filterPath())
   }
 
   getEvents() {
-    return this.http.get(this.apiUrl + "events" + this.filterPath)
+    return this.http.get(this.apiUrl + "events" + this.filterPath())
   }
 
   getPlaces() {
-    return this.http.get(this.apiUrl + "places" + this.filterPath)
+    return this.http.get(this.apiUrl + "places" + this.filterPath())
   }
 }
