@@ -17,6 +17,8 @@ import { SharedService } from './services/shared.service';
 import { WeatherComponent } from './components/weather/today.component';
 import { ForecastService } from './services/forecast.service';
 import { AccountService } from './services/account.service';
+import { UserLoginComponent } from './components/user-login/user-login.component';
+import { UserRegisterComponent } from './components/user-register/user-register.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { AccountService } from './services/account.service';
     ListActivitiesComponent,
     ListPlacesComponent,
     ListEventsComponent,
-    WeatherComponent
+    WeatherComponent,
+    UserLoginComponent,
+    UserRegisterComponent
   ],
   imports: [
     BrowserModule,
