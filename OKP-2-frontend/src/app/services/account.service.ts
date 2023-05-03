@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment.development';
 import { IUser } from '../models/IUser';
 
 interface IJWT {
-    unique_name: string;
+    nameid: string;
     role: string;
 }
 
@@ -55,14 +55,14 @@ export class AccountService {
     }
 
     public getToken() {
-        return localStorage.getItem('auth-key') ?? '';
+        return localStorage.getItem('token') ?? '';
     }
 
     public getUsername() {
         const token = this.getToken();
         if (!token) return "";
         const payload = this.decodeJWT(token).payload as IJWT;
-        return payload.unique_name;
+        return payload.nameid;
     }
 
     public getRole() {
