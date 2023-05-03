@@ -13,7 +13,7 @@
 
 <div *ngIf="showActivitiesMarkers">
 <map-marker #activityMarker="mapMarker"
-  *ngFor="let activity of activityLocations; let i = index"
+  *ngFor="let activity of dataService.activityLocations; let i = index"
   [position]="activity.position"
   [options]="activityMarkerOptions"
   [title]="activity.name"
@@ -23,7 +23,7 @@
 
 <div *ngIf="showEventsMarkers">
 <map-marker #eventMarker="mapMarker"
-  *ngFor="let event of eventLocations; let i = index"
+  *ngFor="let event of dataService.eventLocations; let i = index"
   [position]="event.position"
   [options]="eventMarkerOptions"
   [title]="event.name"
@@ -33,7 +33,7 @@
 
 <div *ngIf="showPlacesMarkers">
 <map-marker #placeMarker="mapMarker"
-  *ngFor="let place of placeLocations; let i = index"
+  *ngFor="let place of dataService.placeLocations; let i = index"
   [position]="place.position"
   [options]="placeMarkerOptions"
   [title]="place.name"
