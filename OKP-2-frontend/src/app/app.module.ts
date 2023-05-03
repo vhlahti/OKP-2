@@ -19,6 +19,7 @@ import { ForecastService } from './services/forecast.service';
 import { AccountService } from './services/account.service';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { UserRegisterComponent } from './components/user-register/user-register.
     CommonModule,
     AppRoutingModule,
     GoogleMapsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [DataService, SharedService, ForecastService, AccountService],
   bootstrap: [AppComponent]

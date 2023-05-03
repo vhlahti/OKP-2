@@ -4,58 +4,76 @@ import { ReplaySubject, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { IUser } from '../models/IUser';
 
+interface IJWT {
+    unique_name: string;
+    role: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = environment.apiUrl;
-  private currentUserSource = new ReplaySubject<IUser>(null);
-  currentUser$ = this.currentUserSource.asObservable();
+    baseUrl = environment.apiUrl;
+    private currentUserSource = new ReplaySubject<IUser>(null);
+    currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  loadCurrentUser(token: string | null) {
-    if (token === null) {
-      this.currentUserSource.next(null);
-      return of(null);
+    loadCurrentUser(token: string | null) {
+        if (token === null) {
+            this.currentUserSource.next(null);
+            return of(null);
+        }
+        let headers = new HttpHeaders();
+        headers = headers.set('Authorization', `Bearer ${token}`);
+        return this.http.get(this.baseUrl + 'account', { headers }).pipe(
+            map((user: IUser) => {
+                if (user) {
+                    localStorage.setItem('token', user.token);
+                    this.currentUserSource.next(user);
+                }
+            })
+        );
     }
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `Bearer ${token}`);
-    return this.http.get(this.baseUrl + 'account', {headers}).pipe(
-      map((user: IUser) => {
-        if (user) {
-          localStorage.setItem('token', user.token);
-          this.currentUserSource.next(user);
-        }
-      })
-    );
-  }
 
-  signup(values: any) {
-    return this.http.post(this.baseUrl + 'signup', values).pipe(
-      map((user: IUser) => {
-        if (user) {
-          localStorage.setItem('token', user.token);
-          this.currentUserSource.next(user);
-        }
-      })
-    );
-  }
+    signup(formData: FormData) {
+        return this.http.post(this.baseUrl + 'signup', formData);
+    }
 
-  login(values: any) {
-    return this.http.post(this.baseUrl + 'login', values).pipe(
-      map((user: IUser) => {
-        if (user) {
-          localStorage.setItem('token', user.token);
-          this.currentUserSource.next(user);
-        }
-      })
-    );
-  }
+    login(formData: FormData) {
+        return this.http.post(this.baseUrl + 'login', formData)
+    }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.currentUserSource.next(null);
-  }
+    logout() {
+        localStorage.removeItem('token');
+        this.currentUserSource.next(null);
+    }
 
+    public setToken(token: string) {
+        localStorage.removeItem('token');
+        localStorage.setItem('token', token);
+    }
+
+    public getToken() {
+        return localStorage.getItem('auth-key') ?? '';
+    }
+
+    public getUsername() {
+        const token = this.getToken();
+        if (!token) return "";
+        const payload = this.decodeJWT(token).payload as IJWT;
+        return payload.unique_name;
+    }
+
+    public getRole() {
+        const token = this.getToken();
+        if (!token) return "guest";
+        const payload = this.decodeJWT(token).payload as IJWT;
+        return payload.role;
+    }
+
+    private decodeJWT(token: string) {
+        var arr = token.split('.');
+        return { header: JSON.parse(atob(arr[0])), payload: JSON.parse(atob(arr[1])), secret: arr[2] }
+    }
 }
