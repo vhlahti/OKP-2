@@ -1,6 +1,18 @@
 <div class="frame">
-<h3>Activities</h3>
-<section *ngFor="let activity of activities; index as i">
-    <p>{{ i + 1 }}. {{ getActivity(activity) }}</p>
-</section>
+  <h3>Activities</h3>
+  <section *ngFor="let activity of activities; index as i">
+    <div class="card py-3 my-4">
+      <div class="card-body">
+        <h5 class="card-title">{{ getActivityName(activity) }}</h5>
+        <p class="card-text">{{ getActivityDescription(activity) }}</p>
+        <a href="#" class="btn btn-primary me-1">Näytä kartalla</a>
+        <a
+          *ngIf="getActivityHasLink(activity)"
+          href="{{ getActivityLink(activity) }}"
+          class="btn btn-primary"
+          >Kotisivut</a
+        >
+      </div>
+    </div>
+  </section>
 </div>
