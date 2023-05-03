@@ -43,6 +43,7 @@ export class MapComponent implements OnInit {
   width = '100%';
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
+    center: { lat: 60.172727, lng: 24.939491 },
     maxZoom: 18,
     minZoom: 5
   };
