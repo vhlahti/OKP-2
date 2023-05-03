@@ -1,8 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReplaySubject, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { IUser } from '../models/IUser';
 
 interface IJWT {
     unique_name: string;
@@ -14,27 +12,8 @@ interface IJWT {
 })
 export class AccountService {
     baseUrl = environment.apiUrl;
-    private currentUserSource = new ReplaySubject<IUser>(null);
-    currentUser$ = this.currentUserSource.asObservable();
 
     constructor(private http: HttpClient) { }
-
-    loadCurrentUser(token: string | null) {
-        if (token === null) {
-            this.currentUserSource.next(null);
-            return of(null);
-        }
-        let headers = new HttpHeaders();
-        headers = headers.set('Authorization', `Bearer ${token}`);
-        return this.http.get(this.baseUrl, { headers }).pipe(
-            map((user: IUser) => {
-                if (user) {
-                    localStorage.setItem('token', user.token);
-                    this.currentUserSource.next(user);
-                }
-            })
-        );
-    }
 
     signup(formData: FormData) {
         return this.http.post(this.baseUrl + 'signup', formData);
@@ -46,7 +25,6 @@ export class AccountService {
 
     logout() {
         localStorage.removeItem('token');
-        this.currentUserSource.next(null);
     }
 
     public setToken(token: string) {
@@ -55,7 +33,7 @@ export class AccountService {
     }
 
     public getToken() {
-        return localStorage.getItem('auth-key') ?? '';
+        return localStorage.getItem('token') ?? '';
     }
 
     public getUsername() {
@@ -77,16 +55,11 @@ export class AccountService {
         return { header: JSON.parse(atob(arr[0])), payload: JSON.parse(atob(arr[1])), secret: arr[2] }
     }
 
-    getFavorites(token: string | null) {
-        let headers = new HttpHeaders();
-        headers = headers.set('Authorization', `Bearer ${token}`);
-        return this.http.get(this.baseUrl + 'favorites', { headers }).pipe(
-            map((user: IUser) => {
-                if (user) {
-                    localStorage.setItem('token', user.token);
-                    this.currentUserSource.next(user);
-                }
-            })
-        );
+    getFavorites(token: string) {
+        const headers = new HttpHeaders({
+          'Authorization': 'Bearer ' + token
+        });
+        return this.http.get(this.baseUrl + 'favorites', { headers });
     }
+    
 }
