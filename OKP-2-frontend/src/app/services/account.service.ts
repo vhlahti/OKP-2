@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 
 interface IJWT {
-    unique_name: string;
+    nameid: string;
     role: string;
 }
 
@@ -40,7 +40,7 @@ export class AccountService {
         const token = this.getToken();
         if (!token) return "";
         const payload = this.decodeJWT(token).payload as IJWT;
-        return payload.unique_name;
+        return payload.nameid;
     }
 
     public getRole() {

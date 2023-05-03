@@ -30,10 +30,8 @@ export class ListActivitiesComponent implements OnInit {
     );
   }
   getActivityDescription(activity: ActivityV2) {
-    return activity.descriptions['fi'].description.replace(
-      /<\/?[^>]+(>|$)/g,
-      ''
-    );
+    let description = activity.descriptions['fi']?.description ?? activity.descriptions['en']?.description;
+    return description.replace(/<\/?[^>]+(>|$)/g, '');
   }
   getActivityHasLink(activity: ActivityV2) {
     return !!activity;
