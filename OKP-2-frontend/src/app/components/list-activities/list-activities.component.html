@@ -1,23 +1,24 @@
 <div class="frame">
   <h3>Activities</h3>
-  <section *ngFor="let activity of activities; index as i">
+  <section *ngFor="let activity of dataService.activities; index as i">
     <div class="card py-3 my-4">
       <div class="card-body">
-        <h5 class="card-title">{{ getActivityName(activity) }}</h5>
+        <h4 class="card-title">{{ getActivityName(activity) }}</h4>
         <p class="card-text">{{ getActivityDescription(activity) }}</p>
         <a href="#" class="btn btn-primary me-1">Näytä kartalla</a>
         <a
           *ngIf="getActivityHasLink(activity)"
           href="{{ getActivityLink(activity) }}"
           class="btn btn-primary"
+          target="_blank"
           >Kotisivut</a
         >
       </div>
     </div>
   </section>
 
-  <div *ngIf="!activities || activities.length === 0">
-    No activities found.
+  <div *ngIf="!dataService.activities || dataService.activities.length === 0">
+    Emme löytäneet aktiviteettejä läheltäsi.
   </div>
 
 </div>

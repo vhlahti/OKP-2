@@ -9,11 +9,8 @@ import { APIResponse } from 'src/app/models/IApiResponse';
   styleUrls: ['./list-events.component.css'],
 })
 export class ListEventsComponent implements OnInit {
-  events: Event[] = [];
 
-  constructor(private dataService: DataService) {
-    this.events = dataService.events;
-  }
+  constructor(public dataService: DataService) { }
 
   ngOnInit(): void {}
 

@@ -11,7 +11,7 @@ import { APIResponse } from 'src/app/models/IApiResponse';
 export class ListActivitiesComponent implements OnInit {
   activities: ActivityV2[] = [];
 
-  constructor(private dataService: DataService) {
+  constructor(public dataService: DataService) {
     this.activities = dataService.activities;
   }
 
@@ -29,11 +29,11 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   getActivityHasLink(activity: ActivityV2) {
-    return !!activity;
+    return !!activity.siteUrl;
   }
 
   getActivityLink(activity: ActivityV2) {
-    return activity;
+    return activity.siteUrl;
   }
 
 }
