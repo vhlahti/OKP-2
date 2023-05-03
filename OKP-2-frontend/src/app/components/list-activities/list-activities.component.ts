@@ -4,28 +4,41 @@ import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { APIResponse } from 'src/app/models/IApiResponse';
 
 @Component({
-    selector: 'app-list-activities',
-    templateUrl: './list-activities.component.html',
-    styleUrls: ['./list-activities.component.css']
+  selector: 'app-list-activities',
+  templateUrl: './list-activities.component.html',
+  styleUrls: ['./list-activities.component.css'],
 })
 export class ListActivitiesComponent implements OnInit {
+  activities: ActivityV2[];
 
-    activities: ActivityV2[];
+  constructor(private dataService: DataService) {}
 
-    constructor(private dataService: DataService) { }
+  ngOnInit(): void {
+    this.getActivitiesData();
+  }
 
-    ngOnInit(): void {
-        this.getActivitiesData();
-    }
+  getActivitiesData() {
+    this.dataService.getActivities().subscribe((res: APIResponse) => {
+      let result = JSON.parse(res.data.result);
+      this.activities = result.rows;
+    });
+  }
 
-    getActivitiesData() {
-        this.dataService.getActivities().subscribe((res: APIResponse) => {
-            let result = JSON.parse(res.data.result);
-            this.activities = result.rows;
-        });
-    }
-
-    getActivity(activity: ActivityV2) {
-        return activity.descriptions["fi"]?.name ?? activity.descriptions["en"]?.name;
-    }
+  getActivityName(activity: ActivityV2) {
+    return (
+      activity.descriptions['fi']?.name ?? activity.descriptions['en']?.name
+    );
+  }
+  getActivityDescription(activity: ActivityV2) {
+    return activity.descriptions['fi'].description.replace(
+      /<\/?[^>]+(>|$)/g,
+      ''
+    );
+  }
+  getActivityHasLink(activity: ActivityV2) {
+    return !!activity;
+  }
+  getActivityLink(activity: ActivityV2) {
+    return activity;
+  }
 }
