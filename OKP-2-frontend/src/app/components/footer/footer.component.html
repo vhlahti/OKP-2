@@ -16,8 +16,10 @@
     </div>
   </div>
 
-  <app-list-activities class="content" id="content-1" [ngStyle]="{display: activitiesStatus }"></app-list-activities>
-  <app-list-events class="content" id="content-2" [ngStyle]="{display: eventsStatus }"></app-list-events>
-  <app-list-places class="content" id="content-3" [ngStyle]="{display: placesStatus}"></app-list-places>
+  <section class="container">
+    <app-list-activities class="content" id="content-1" [ngStyle]="{display: activitiesStatus }"></app-list-activities>
+    <app-list-events class="content" id="content-2" [ngStyle]="{display: eventsStatus }"></app-list-events>
+    <app-list-places class="content" id="content-3" [ngStyle]="{display: placesStatus}"></app-list-places>
+  </section>
 
 </section>
