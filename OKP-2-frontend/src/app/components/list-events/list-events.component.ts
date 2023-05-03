@@ -9,20 +9,13 @@ import { APIResponse } from 'src/app/models/IApiResponse';
   styleUrls: ['./list-events.component.css'],
 })
 export class ListEventsComponent implements OnInit {
-  events: Event[];
+  events: Event[] = [];
 
-  constructor(private dataService: DataService) {}
-
-  ngOnInit(): void {
-    this.getEventsData();
+  constructor(private dataService: DataService) {
+    this.events = dataService.events;
   }
 
-  getEventsData() {
-    this.dataService.getEvents().subscribe((res: APIResponse) => {
-      let result = JSON.parse(res.data.result);
-      this.events = result.data;
-    });
-  }
+  ngOnInit(): void {}
 
   getEventName(event: Event) {
     return event.name.fi ?? event.name.en;
@@ -38,4 +31,5 @@ export class ListEventsComponent implements OnInit {
   getEventLink(event: Event) {
     return event.info_url;
   }
+
 }

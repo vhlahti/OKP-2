@@ -9,34 +9,31 @@ import { APIResponse } from 'src/app/models/IApiResponse';
   styleUrls: ['./list-activities.component.css'],
 })
 export class ListActivitiesComponent implements OnInit {
-  activities: ActivityV2[];
+  activities: ActivityV2[] = [];
 
-  constructor(private dataService: DataService) {}
-
-  ngOnInit(): void {
-    this.getActivitiesData();
+  constructor(private dataService: DataService) {
+    this.activities = dataService.activities;
   }
 
-  getActivitiesData() {
-    this.dataService.getActivities().subscribe((res: APIResponse) => {
-      let result = JSON.parse(res.data.result);
-      this.activities = result.rows;
-    });
-  }
+  ngOnInit(): void {}
 
   getActivityName(activity: ActivityV2) {
     return (
       activity.descriptions['fi']?.name ?? activity.descriptions['en']?.name
     );
   }
+
   getActivityDescription(activity: ActivityV2) {
     let description = activity.descriptions['fi']?.description ?? activity.descriptions['en']?.description;
     return description.replace(/<\/?[^>]+(>|$)/g, '');
   }
+
   getActivityHasLink(activity: ActivityV2) {
     return !!activity;
   }
+
   getActivityLink(activity: ActivityV2) {
     return activity;
   }
+
 }

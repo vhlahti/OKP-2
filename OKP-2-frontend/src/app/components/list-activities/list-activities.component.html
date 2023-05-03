@@ -15,4 +15,9 @@
       </div>
     </div>
   </section>
+
+  <div *ngIf="!activities || activities.length === 0">
+    No activities found.
+  </div>
+
 </div>
