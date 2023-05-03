@@ -62,6 +62,7 @@ export class DataService {
     this.getActivities().subscribe((res: APIResponse) => {
         let result = JSON.parse(res.data.result);
         this.activities = result.rows;
+        console.log("Activities");
         console.log(this.activities);
 
         // filter results and push selected data to additional array
@@ -91,6 +92,7 @@ export class DataService {
     this.getEvents().subscribe((res: APIResponse) => {
         let result = JSON.parse(res.data.result);
         this.events = result.data;
+        console.log("Events");
         console.log(this.events);
 
         // filter results and push selected data to additional array
@@ -120,6 +122,7 @@ export class DataService {
     this.getPlaces().subscribe((res: APIResponse) => {
         let result = JSON.parse(res.data.result);
         this.places = result.data;
+        console.log("Places");
         console.log(this.places);
 
         // filter results and push selected data to additional array

@@ -9,11 +9,8 @@ import { APIResponse } from 'src/app/models/IApiResponse';
   styleUrls: ['./list-places.component.css'],
 })
 export class ListPlacesComponent implements OnInit {
-  places: PlaceV2[] = [];
 
-  constructor(private dataService: DataService) {
-    this.places = dataService.places;
-  }
+  constructor(public dataService: DataService) { }
 
   ngOnInit(): void {}
 
@@ -25,8 +22,8 @@ export class ListPlacesComponent implements OnInit {
     return place.description.body.replace(/<\/?[^>]+(>|$)/g, '');
   }
 
-  getPlaceHasLink(Place: PlaceV2) {
-    return !!this.places;
+  getPlaceHasLink(place: PlaceV2) {
+    return !!place.info_url;
   }
 
   getPlaceLink(place: PlaceV2) {
