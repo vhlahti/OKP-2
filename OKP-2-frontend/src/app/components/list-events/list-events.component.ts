@@ -6,25 +6,36 @@ import { APIResponse } from 'src/app/models/IApiResponse';
 @Component({
   selector: 'app-list-events',
   templateUrl: './list-events.component.html',
-  styleUrls: ['./list-events.component.css']
+  styleUrls: ['./list-events.component.css'],
 })
 export class ListEventsComponent implements OnInit {
-    events: Event[];
+  events: Event[];
 
-    constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {}
 
-    ngOnInit(): void {
-        this.getEventsData();
-    }
+  ngOnInit(): void {
+    this.getEventsData();
+  }
 
-    getEventsData() {
-        this.dataService.getEvents().subscribe((res: APIResponse) => {
-            let result = JSON.parse(res.data.result);
-            this.events = result.data;
-        });
-    }
+  getEventsData() {
+    this.dataService.getEvents().subscribe((res: APIResponse) => {
+      let result = JSON.parse(res.data.result);
+      this.events = result.data;
+    });
+  }
 
-    getEvent(event: Event) {
-        return event.name.fi ?? event.name.en;
-    }
+  getEventName(event: Event) {
+    return event.name.fi ?? event.name.en;
+  }
+  getEventDescription(event: Event) {
+    return event.description.body.replace(/<\/?[^>]+(>|$)/g, '');
+  }
+  getEventHasLink(event: Event) {
+    // Convert to boolean
+    return !!event.info_url;
+  }
+
+  getEventLink(event: Event) {
+    return event.info_url;
+  }
 }

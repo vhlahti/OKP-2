@@ -26,7 +26,7 @@ export class AccountService {
         }
         let headers = new HttpHeaders();
         headers = headers.set('Authorization', `Bearer ${token}`);
-        return this.http.get(this.baseUrl + 'account', { headers }).pipe(
+        return this.http.get(this.baseUrl, { headers }).pipe(
             map((user: IUser) => {
                 if (user) {
                     localStorage.setItem('token', user.token);
@@ -75,5 +75,18 @@ export class AccountService {
     private decodeJWT(token: string) {
         var arr = token.split('.');
         return { header: JSON.parse(atob(arr[0])), payload: JSON.parse(atob(arr[1])), secret: arr[2] }
+    }
+
+    getFavorites(token: string | null) {
+        let headers = new HttpHeaders();
+        headers = headers.set('Authorization', `Bearer ${token}`);
+        return this.http.get(this.baseUrl + 'favorites', { headers }).pipe(
+            map((user: IUser) => {
+                if (user) {
+                    localStorage.setItem('token', user.token);
+                    this.currentUserSource.next(user);
+                }
+            })
+        );
     }
 }
