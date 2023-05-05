@@ -1,3 +1,7 @@
+.weather-frame {
+  padding-top: 400px;
+  z-index: 9996;
+}
 
 .weather-container *{
   background-color: hsl(200, 100%, 85%);

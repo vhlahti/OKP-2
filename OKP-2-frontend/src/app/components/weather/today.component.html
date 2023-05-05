@@ -1,3 +1,5 @@
+<section class="weather-frame">
+
 <div class="weather-container">
     <div *ngIf="weatherNow">
         <div class="time">{{ currentTime | date:'HH:mm': 'UTC+3'}} {{ location.name }}</div>
@@ -18,3 +20,5 @@
         </div>
     </div>
 </div>
+
+</section>

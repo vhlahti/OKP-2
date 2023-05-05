@@ -28,14 +28,14 @@ export class MapComponent implements OnInit {
   public showEventsMarkers = false;
 
   // google maps settings
-  zoom = 13;
+  zoom = 15;
   height = '300px';
   width = '100%';
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
     center: { lat: 60.172727, lng: 24.939491 },
-    maxZoom: 18,
-    minZoom: 5,
+    maxZoom: 17,
+    minZoom: 10,
   };
 
   // user marker settings
@@ -57,7 +57,7 @@ export class MapComponent implements OnInit {
       ),
       strokeWeight: 1,
       strokeColor: '#ffffff',
-      scale: 0.06, // size of the marker
+      scale: 0.05, // size of the marker
     },
   };
 
@@ -73,7 +73,7 @@ export class MapComponent implements OnInit {
       ),
       strokeWeight: 1,
       strokeColor: '#ffffff',
-      scale: 0.06,
+      scale: 0.05,
     },
   };
 
@@ -89,13 +89,13 @@ export class MapComponent implements OnInit {
       ),
       strokeWeight: 1,
       strokeColor: '#ffffff',
-      scale: 0.06,
+      scale: 0.05,
     },
   };
 
   // marker info window settings
   infoWindowOptions: google.maps.InfoWindowOptions = {
-    // optional settings here
+    maxWidth: 300
   };
 
   constructor(
@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
 
     // set zoom back to default when info window is closed
     this.infoWindow.closeclick.subscribe(() => {
-      this.zoom = 13;
+      this.zoom = 15;
     });
   }
 

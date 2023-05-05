@@ -15,11 +15,11 @@ import { ILocation } from 'src/app/models/ILocation';
 export class DataService {
 
   activities: ActivityV2[] = [];
-  activityLocations: ILocation[] = [];
+  activityMarkerInfo: ILocation[] = [];
   events: Event[] = [];
-  eventLocations: ILocation[] = [];
+  eventMarkerInfo: ILocation[] = [];
   places: PlaceV2[] = [];
-  placeLocations: ILocation[] = [];
+  placeMarkerInfo: ILocation[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -74,7 +74,7 @@ export class DataService {
             const url = activity.storeUrl;
             const about = activity.descriptions["fi"]?.description ?? activity.descriptions["en"]?.description;
             const tags = activity.tags;
-            this.activityLocations.push({
+            this.activityMarkerInfo.push({
               position: { lat, lng: long },
               name,
               address: { street_address: streetName, postal_code: postalCode, city},
@@ -84,7 +84,7 @@ export class DataService {
               tags
             });
             }
-            console.log(this.activityLocations);
+            console.log(this.activityMarkerInfo);
     });
   }
 
@@ -104,7 +104,7 @@ export class DataService {
         const url = event.info_url;
         const about = event.description.intro;
         const tags = event.tags.map(tag => tag.name);
-        this.eventLocations.push({
+        this.eventMarkerInfo.push({
           position: { lat, lng: lon },
           name,
           address: { street_address, postal_code, city: locality},
@@ -114,7 +114,7 @@ export class DataService {
           tags
         });
         }
-        console.log(this.eventLocations);
+        console.log(this.eventMarkerInfo);
     });
   }
 
@@ -135,7 +135,7 @@ export class DataService {
             const url = place.info_url;
             const about = place.description.intro;
             const tags = place.tags.map(tag => tag.name);
-            this.placeLocations.push({
+            this.placeMarkerInfo.push({
               position: { lat, lng: lon },
               name,
               address: { street_address, postal_code, city: locality},
@@ -145,7 +145,7 @@ export class DataService {
               tags
             });
             }
-            console.log(this.placeLocations);
+            console.log(this.placeMarkerInfo);
     });
   }
 
