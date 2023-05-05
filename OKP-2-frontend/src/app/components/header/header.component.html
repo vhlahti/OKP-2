@@ -3,7 +3,7 @@
         <h4><fa-icon class="logo" [icon]="faMapLocationDot"></fa-icon>MAPPi</h4>
     </div>
     <div class="d-flex dropdownmenu align-items-center">
-        <div *ngIf="accountService.getUsername()">User: {{ accountService.getUsername() }}</div>
+        <div class="text-user" *ngIf="accountService.getUsername()">Kirjautunut: {{ accountService.getUsername() }}</div>
         <div class="button-user">
             <a class="btn" data-bs-toggle="dropdown"><fa-icon [icon]="faUser" size="xl"></fa-icon>
                 <ul class="dropdown-menu">

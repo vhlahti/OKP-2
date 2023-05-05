@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HelsinkiListComponent } from './components/helsinki-list/helsinki-list.component';
 import { HelsinkiService } from './services/helsinki.service';
 import { HelsinkiListItemComponent } from './components/helsinki-list-item/helsinki-list-item.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HelsinkiListItemComponent } from './components/helsinki-list-item/helsi
     UserLoginComponent,
     UserRegisterComponent,
     HelsinkiListComponent,
-    HelsinkiListItemComponent
+    HelsinkiListItemComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,14 @@ img {
    margin-top: 1rem;
 }
 
+.map-container {
+  padding-top: 40px;
+  position: fixed;
+  z-index: 9998;
+  height: 300px;
+  width: 100%;
+}
+
 @media only screen and (min-width: 768px) {
   /* Tablet and bigger: */
   img {

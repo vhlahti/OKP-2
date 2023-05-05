@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
 
   // google maps settings
   zoom = 13;
-  height = '400px';
+  height = '300px';
   width = '100%';
   center: google.maps.LatLngLiteral;
   options: google.maps.MapOptions = {
