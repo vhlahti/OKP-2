@@ -21,23 +21,14 @@ export class FooterComponent {
   public clickHandler(label: string) {
     switch (label) {
       case "places":
-        this.placesStatus = "block";
-        this.activitiesStatus = "none";
-        this.eventsStatus = "none";
         this.sharedService.setCurrentCase('places');
         break;
 
       case "activities":
-        this.placesStatus = "none";
-        this.activitiesStatus = "block";
-        this.eventsStatus = "none";
         this.sharedService.setCurrentCase('activities');
         break;
 
       case "events":
-        this.placesStatus = "none";
-        this.activitiesStatus = "none";
-        this.eventsStatus = "block";
         this.sharedService.setCurrentCase('events');
         break;
     
