@@ -1,6 +1,7 @@
 .weather-frame {
-  padding-top: 400px;
-  z-index: 9996;
+  position: relative;
+  z-index: 9999;
+  padding-top: 40px;
 }
 
 .weather-container *{
@@ -12,16 +13,7 @@
   padding: 0.3rem 0.5rem;
 }
 
-
-.temp {
-
-}
-
 img {
   max-width: 50%;
   max-height: 50%;
-}
-
-.forecast {
-
 }
