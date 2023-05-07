@@ -28,11 +28,8 @@ h4 {
   font-weight: normal;
 }
 .dropdownmenu a:hover {
-  color: #e0e0e0;
+  box-shadow: 0 0 5px 2px #ddd;
   cursor: pointer;
-}
-.dropdownmenu a:checked {
-  filter: drop-shadow(0 0 6px #e2e2e2);
 }
 
 .btn {
