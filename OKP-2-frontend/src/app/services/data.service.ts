@@ -65,6 +65,8 @@ export class DataService {
         console.log("Activities");
         console.log(this.activities);
 
+        // clear old marker info on marker drag end
+        this.activityMarkerInfo.splice(0, this.activityMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const activity of this.activities) {
             const { lat, long } = activity.address?.location ?? {};
@@ -95,6 +97,8 @@ export class DataService {
         console.log("Events");
         console.log(this.events);
 
+        // clear old marker info on marker drag end
+        this.eventMarkerInfo.splice(0, this.eventMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const event of this.events) {
         const { lat, lon } = event.location ?? {};
@@ -125,6 +129,8 @@ export class DataService {
         console.log("Places");
         console.log(this.places);
 
+        // clear old marker info on marker drag end
+        this.placeMarkerInfo.splice(0, this.placeMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const place of this.places) {
             const { lat, lon } = place.location ?? {};

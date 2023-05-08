@@ -42,7 +42,7 @@ export class MapComponent implements OnInit {
   userCurrentLocation = false;
 
   userMarkerOptions: google.maps.MarkerOptions = {
-    //
+    draggable: true
   };
 
   // activity marker settings
@@ -192,4 +192,14 @@ export class MapComponent implements OnInit {
     const userLng = this.center.lng;
     this.dataService.updateUserLocation(userLat, userLng);
   }
+
+  onMarkerDragEnd(event: google.maps.MapMouseEvent) {
+    const userLat = event.latLng.lat();
+    const userLng = event.latLng.lng();
+    this.dataService.updateUserLocation(userLat, userLng);
+    this.dataService.getActivitiesData();
+    this.dataService.getEventsData();
+    this.dataService.getPlacesData();
+  }
+
 }

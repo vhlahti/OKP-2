@@ -10,7 +10,8 @@
 <map-marker #userLocationMarker *ngIf="userCurrentLocation"
   [position]="center"
   [options]="userMarkerOptions"
-  [title]="userTitle">
+  [title]="userTitle"
+  (mapDragend)="onMarkerDragEnd($event)">
 </map-marker>
 
 <div *ngIf="showActivitiesMarkers">
