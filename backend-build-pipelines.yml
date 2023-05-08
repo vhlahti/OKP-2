@@ -30,4 +30,4 @@ steps:
   inputs:
     azureSubscription: 'mico-arm'
     appName: 'mappi-backend'
-    containers: 'vhlahtiokp2_app'
+    multicontainerConfigFile: '**/docker-compose.yml'
