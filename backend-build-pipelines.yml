@@ -10,6 +10,22 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'mico-arm'
+    azureContainerRegistry: '{"loginServer":"micoregistery.azurecr.io", "id" : "/subscriptions/75d10f6b-2602-4c4f-9332-816e48514742/resourceGroups/OKP-2/providers/Microsoft.ContainerRegistry/registries/MicoRegistery"}'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Build services'
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'mico-arm'
+    azureContainerRegistry: '{"loginServer":"micoregistery.azurecr.io", "id" : "/subscriptions/75d10f6b-2602-4c4f-9332-816e48514742/resourceGroups/OKP-2/providers/Microsoft.ContainerRegistry/registries/MicoRegistery"}'
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Push services'
+
 - task: AzureWebAppContainer@1
   inputs:
     azureSubscription: 'mico-arm'
