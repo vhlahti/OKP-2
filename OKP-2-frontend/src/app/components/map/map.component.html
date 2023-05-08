@@ -1,14 +1,14 @@
 <section class="map-container">
 
 <google-map
-  [zoom]="zoom"
-  [center]="center"
-  [options]="options"
-  [height]="height"
-  [width]="width">
+  [zoom]="dataService.zoom"
+  [center]="dataService.center"
+  [options]="dataService.options"
+  [height]="dataService.height"
+  [width]="dataService.width">
 
 <map-marker #userLocationMarker *ngIf="userCurrentLocation"
-  [position]="center"
+  [position]="dataService.center"
   [options]="userMarkerOptions"
   [title]="userTitle"
   (mapDragend)="onMarkerDragEnd($event)">

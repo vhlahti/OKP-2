@@ -27,20 +27,8 @@ export class MapComponent implements OnInit {
   public showActivitiesMarkers = false;
   public showEventsMarkers = false;
 
-  // google maps settings
-  zoom = 15;
-  height = '300px';
-  width = '100%';
-  center: google.maps.LatLngLiteral;
-  options: google.maps.MapOptions = {
-    center: { lat: 60.172727, lng: 24.939491 },
-    maxZoom: 17,
-    minZoom: 10,
-  };
-
   // user marker settings
   userCurrentLocation = false;
-
   userMarkerOptions: google.maps.MarkerOptions = {
     draggable: true
   };
@@ -119,12 +107,12 @@ export class MapComponent implements OnInit {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.center = {
+        this.dataService.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
         this.updateLocation();
-        console.log(this.center);
+        console.log(this.dataService.center);
 
         this.dataService.getActivitiesData();
         this.dataService.getEventsData();
@@ -133,9 +121,9 @@ export class MapComponent implements OnInit {
       (error) => {
         console.log('Error getting user location:', error.message);
         // set helsinki city center as location if user denies geolocation
-        this.center = { lat: 60.172727, lng: 24.939491 };
+        this.dataService.center = { lat: 60.172727, lng: 24.939491 };
         this.updateLocation();
-        console.log(this.center);
+        console.log(this.dataService.center);
 
         this.dataService.getActivitiesData();
         this.dataService.getEventsData();
@@ -151,7 +139,7 @@ export class MapComponent implements OnInit {
 
     // set zoom back to default when info window is closed
     this.infoWindow.closeclick.subscribe(() => {
-      this.zoom = 15;
+      this.dataService.zoom = 15;
     });
   }
 
@@ -183,13 +171,13 @@ export class MapComponent implements OnInit {
   }
 
   zoomIn() {
-    if (this.zoom < this.options.maxZoom) this.zoom++;
+    if (this.dataService.zoom < this.dataService.options.maxZoom) this.dataService.zoom++;
   }
 
   updateLocation() {
     // send user geolocation coordinates to data service
-    const userLat = this.center.lat;
-    const userLng = this.center.lng;
+    const userLat = this.dataService.center.lat;
+    const userLng = this.dataService.center.lng;
     this.dataService.updateUserLocation(userLat, userLng);
   }
 

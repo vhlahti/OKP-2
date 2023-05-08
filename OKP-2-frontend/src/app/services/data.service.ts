@@ -21,6 +21,17 @@ export class DataService {
   places: PlaceV2[] = [];
   placeMarkerInfo: ILocation[] = [];
 
+  // google maps settings
+  zoom = 15;
+  height = '300px';
+  width = '100%';
+  center: google.maps.LatLngLiteral;
+  options: google.maps.MapOptions = {
+    center: { lat: 60.172727, lng: 24.939491 },
+    maxZoom: 17,
+    minZoom: 10,
+  };
+
   constructor(private http: HttpClient) { }
 
   // filter settings
