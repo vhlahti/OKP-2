@@ -40,7 +40,7 @@ public partial class PostgresContext : DbContext
                 .HasMaxLength(16)
                 .HasColumnName("user");
             entity.Property(e => e.Id)
-                .HasMaxLength(32)
+                .HasMaxLength(64)
                 .HasColumnName("id");
             entity.Property(e => e.Type)
                 .HasMaxLength(16)

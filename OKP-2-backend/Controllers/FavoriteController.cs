@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using backend.Clients;
 
 namespace backend.Controllers;
 
@@ -14,11 +15,13 @@ public class FavoriteController : ControllerBase
 {
     private readonly PostgresContext _context;
     private readonly IJwtProvider _jwt;
+    private readonly IHelsinkiClient _helsinkiClient;
 
-    public FavoriteController(PostgresContext context, IJwtProvider jwt)
+    public FavoriteController(PostgresContext context, IJwtProvider jwt, IHelsinkiClient helsinkiClient)
     {
         _context = context;
         _jwt = jwt;
+        _helsinkiClient = helsinkiClient;
     }
 
     [HttpPost("favorites")]
@@ -38,12 +41,74 @@ public class FavoriteController : ControllerBase
         // ClaimTypes.NameIdentifier which we use in our JWT service
         var username = _jwt.GetClaim(token, "nameid");
 
-        var query = this._context.Favorites
+        var userdata = this._context.Favorites
             .Where(favorite => favorite.User == username)
             .Select(favorite => new { favorite.User, favorite.Id, favorite.Type })
             .ToList();
 
-        return Ok(new { status = "Success", favorites = query });
+        var places = new List<object>();
+        var activities = new List<object>();
+        var events = new List<object>();
+
+        var placeErrors = new List<string>();
+        var activityErrors = new List<string>();
+        var eventErrors = new List<string>();
+
+        foreach (var favorite in userdata)
+        {
+            try
+            {
+                if (favorite.Type == "place")
+                {
+                    var address = $"v2/{favorite.Type}/{favorite.Id}";
+                    var place = _helsinkiClient.GetOne(address);
+                    places.Add(place.Result);
+                }
+                else if (favorite.Type == "activity")
+                {
+                    var address = $"v2/{favorite.Type}/{favorite.Id}";
+                    var activity = _helsinkiClient.GetOne(address);
+                    activities.Add(activity.Result);
+                }
+                else if (favorite.Type == "event")
+                {
+                    var address = $"v1/{favorite.Type}/{favorite.Id}";
+                    var eventt = _helsinkiClient.GetOne(address);
+                    events.Add(eventt.Result);
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"{favorite.Type} {favorite.Id} not found: {ex.Message}";
+                if (favorite.Type == "place")
+                {
+                    placeErrors.Add(errorMessage);
+                }
+                else if (favorite.Type == "activity")
+                {
+                    activityErrors.Add(errorMessage);
+                }
+                else if (favorite.Type == "event")
+                {
+                    eventErrors.Add(errorMessage);
+                }
+            }
+        }
+
+        return Ok(new
+        {
+            status = "Success",
+            favorites = new
+            {
+                userdata,
+                places,
+                activities,
+                events,
+                placeErrors,
+                activityErrors,
+                eventErrors
+            }
+        });
     }
 
     [HttpPost("favorite")]
