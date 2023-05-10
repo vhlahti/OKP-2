@@ -91,4 +91,38 @@ public class FavoriteController : ControllerBase
 
         return Ok(new { status = "Success" });
     }
+
+    [HttpPost("unfavorite")]
+    public IActionResult RemoveFavorite([FromForm] FavoriteRequest request)
+    {
+        string token;
+        try
+        {
+            token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+        }
+        catch
+        {
+            return BadRequest("Failed to parse Authorization header");
+        }
+
+        // Name id is somehow automatically derived from
+        // ClaimTypes.NameIdentifier which we use in our JWT service
+        request.User = _jwt.GetClaim(token, "nameid");
+
+        // Construct full favorite object from request
+        Favorite favorite = new Favorite { User = request.User, Type = request.Type, Id = request.Id };
+
+        try
+        {
+            this._context.Favorites.Remove(favorite);
+            this._context.SaveChanges();
+        }
+        catch
+        {
+            // Handle other exceptions here
+            return BadRequest("Internal server error");
+        }
+
+        return Ok(new { status = "Success" });
+    }
 }
