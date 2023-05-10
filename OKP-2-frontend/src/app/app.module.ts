@@ -10,9 +10,6 @@ import { MapComponent } from './components/map/map.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DataService } from './services/data.service';
-import { ListActivitiesComponent } from './components/list-activities/list-activities.component';
-import { ListPlacesComponent } from './components/list-places/list-places.component';
-import { ListEventsComponent } from './components/list-events/list-events.component';
 import { SharedService } from './services/shared.service';
 import { WeatherComponent } from './components/weather/today.component';
 import { ForecastService } from './services/forecast.service';
@@ -20,6 +17,10 @@ import { AccountService } from './services/account.service';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HelsinkiListComponent } from './components/helsinki-list/helsinki-list.component';
+import { HelsinkiService } from './services/helsinki.service';
+import { HelsinkiListItemComponent } from './components/helsinki-list-item/helsinki-list-item.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MapComponent,
     FooterComponent,
     HeaderComponent,
-    ListActivitiesComponent,
-    ListPlacesComponent,
-    ListEventsComponent,
     WeatherComponent,
     UserLoginComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    HelsinkiListComponent,
+    HelsinkiListItemComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +45,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [DataService, SharedService, ForecastService, AccountService],
+  providers: [DataService, SharedService, ForecastService, AccountService, HelsinkiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

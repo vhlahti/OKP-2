@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
-import { APIResponse } from 'src/app/models/IApiResponse';
-import { ActivityV2 } from 'src/app/models/helsinki-api-model';
-import { Event } from 'src/app/models/helsinki-api-model';
-import { PlaceV2 } from 'src/app/models/helsinki-api-model';
-import { ILocation } from 'src/app/models/ILocation';
-import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-solid-svg-icons';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import {
+  faLandmark,
+  faMasksTheater,
+  faPersonBiking,
+} from '@fortawesome/free-solid-svg-icons';
+import { MapInfoWindow } from '@angular/google-maps';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -15,13 +14,12 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
-
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
 
-  faLandmark = faLandmark; 
+  faLandmark = faLandmark;
   faPersonBiking = faPersonBiking;
   faMasksTheater = faMasksTheater;
-  userTitle = "Sijaintisi";
+  userTitle = 'Sijaintisi';
   selectedMarker: any;
 
   // switch case rules
@@ -29,87 +27,69 @@ export class MapComponent implements OnInit {
   public showActivitiesMarkers = false;
   public showEventsMarkers = false;
 
-  // api and coordinate data
-  activities: ActivityV2[] = [];
-  activityLocations: ILocation[] = [];
-  events: Event[] = [];
-  eventLocations: ILocation[] = [];
-  places: PlaceV2[] = [];
-  placeLocations: ILocation[] = [];
-
-  // google maps settings
-  zoom = 13;
-  height = '400px';
-  width = '100%';
-  center: google.maps.LatLngLiteral;
-  options: google.maps.MapOptions = {
-    center: { lat: 60.172727, lng: 24.939491 },
-    maxZoom: 18,
-    minZoom: 5
-  };
-
   // user marker settings
   userCurrentLocation = false;
-
   userMarkerOptions: google.maps.MarkerOptions = {
-    // 
+    draggable: true
   };
 
   // activity marker settings
   activityMarkerOptions: google.maps.MarkerOptions = {
     icon: {
       path: faPersonBiking.icon[4] as string,
-      fillColor: "#0000ff", // color of the marker
+      fillColor: '#0000ff', // color of the marker
       fillOpacity: 1,
       anchor: new google.maps.Point(
         faPersonBiking.icon[0] / 2, // width
         faPersonBiking.icon[1] // height
       ),
       strokeWeight: 1,
-      strokeColor: "#ffffff",
-      scale: 0.060, // size of the marker
-    }
+      strokeColor: '#ffffff',
+      scale: 0.05, // size of the marker
+    },
   };
 
   // event marker settings
   eventMarkerOptions: google.maps.MarkerOptions = {
     icon: {
       path: faMasksTheater.icon[4] as string,
-      fillColor: "#8a2be2",
+      fillColor: '#8a2be2',
       fillOpacity: 1,
       anchor: new google.maps.Point(
         faMasksTheater.icon[0] / 2, // width
         faMasksTheater.icon[1] // height
       ),
       strokeWeight: 1,
-      strokeColor: "#ffffff",
-      scale: 0.060,
-    }
+      strokeColor: '#ffffff',
+      scale: 0.05,
+    },
   };
 
   // place marker settings
   placeMarkerOptions: google.maps.MarkerOptions = {
     icon: {
       path: faLandmark.icon[4] as string,
-      fillColor: "#d70909",
+      fillColor: '#d70909',
       fillOpacity: 1,
       anchor: new google.maps.Point(
         faLandmark.icon[0] / 2, // width
         faLandmark.icon[1] // height
       ),
       strokeWeight: 1,
-      strokeColor: "#ffffff",
-      scale: 0.060,
-    }
+      strokeColor: '#ffffff',
+      scale: 0.05,
+    },
   };
 
   // marker info window settings
   infoWindowOptions: google.maps.InfoWindowOptions = {
-    // optional settings here
-  }
+    maxWidth: 300
+  };
 
-  constructor(private dataService: DataService,
-              private sharedService: SharedService) {}
+  constructor(
+    public dataService: DataService,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit(): void {
     // get user's current location and keep track of it via geolocation api
@@ -118,126 +98,38 @@ export class MapComponent implements OnInit {
     // update #userMarker visibility
     this.userCurrentLocation = true;
 
-    this.switchCase()
+    this.switchCase();
   }
 
   getUserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((position) => {
-        this.center = {
+    if (!navigator.geolocation)
+      return console.log('Geolocation is not supported by this browser.');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.dataService.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
         this.updateLocation();
-        console.log(this.center);
+        console.log(this.dataService.center);
 
-        this.getActivitiesData();
-        this.getEventsData();
-        this.getPlacesData();
+        this.dataService.getActivitiesData();
+        this.dataService.getEventsData();
+        this.dataService.getPlacesData();
       },
       (error) => {
         console.log('Error getting user location:', error.message);
         // set helsinki city center as location if user denies geolocation
-        this.center = { lat: 60.172727, lng: 24.939491 };
+        this.dataService.center = { lat: 60.172727, lng: 24.939491 };
         this.updateLocation();
-        console.log(this.center);
+        console.log(this.dataService.center);
 
-        this.getActivitiesData();
-        this.getEventsData();
-        this.getPlacesData();
-
-      });
-    } else {
-      console.log('Geolocation is not supported by this browser.');
-    }
-  }
-
-  getActivitiesData() {
-    this.dataService.getActivities().subscribe((res: APIResponse) => {
-        let result = JSON.parse(res.data.result);
-        this.activities = result.rows;
-        console.log(this.activities);
-
-        // fetch the location coordinates and push them to an array
-        for (const activity of this.activities) {
-            const { lat, long } = activity.address?.location ?? {};
-            const name = activity.descriptions["fi"]?.name ?? activity.descriptions["en"]?.name;
-            const { streetName, postalCode, city } = activity.address;
-            const image = activity.media[0]?.originalUrl;
-            const url = activity.storeUrl;
-            const about = activity.descriptions["fi"]?.description ?? activity.descriptions["en"]?.description;
-            const tags = activity.tags;
-            this.activityLocations.push({
-              position: { lat, lng: long },
-              name,
-              address: { street_address: streetName, postal_code: postalCode, city},
-              image,
-              url,
-              about,
-              tags
-            });
-            }
-            console.log(this.activityLocations);
-    });
-  }
-
-  getEventsData() {
-    this.dataService.getEvents().subscribe((res: APIResponse) => {
-        let result = JSON.parse(res.data.result);
-        this.events = result.data;
-        console.log(this.events);
-
-        // fetch the location coordinates and push them to an array
-        for (const event of this.events) {
-        const { lat, lon } = event.location ?? {};
-        const name = event.name.fi ?? event.name.en;
-        const { street_address, postal_code, locality } = event.location.address;
-        const image = event.description.images.length > 0 ? event.description.images[0].url : null;
-        const url = event.info_url;
-        const about = event.description.intro;
-        const tags = event.tags.map(tag => tag.name);
-        this.eventLocations.push({
-          position: { lat, lng: lon },
-          name,
-          address: { street_address, postal_code, city: locality},
-          image,
-          url,
-          about,
-          tags
-        });
-        }
-        console.log(this.eventLocations);
-    });
-  }
-
-  getPlacesData() {
-    this.dataService.getPlaces().subscribe((res: APIResponse) => {
-        let result = JSON.parse(res.data.result);
-        this.places = result.data;
-        console.log(this.places);
-
-        // fetch the location coordinates and push them to an array
-        for (const place of this.places) {
-            const { lat, lon } = place.location ?? {};
-            const name = place.name.fi ?? place.name.en;
-            const { street_address, postal_code, locality } = place.location.address;
-            // const image = place.description.images[0].url;
-            const image = place.description.images.length > 0 ? place.description.images[0].url : null;
-            const url = place.info_url;
-            const about = place.description.intro;
-            const tags = place.tags.map(tag => tag.name);
-            this.placeLocations.push({
-              position: { lat, lng: lon },
-              name,
-              address: { street_address, postal_code, city: locality},
-              image,
-              url,
-              about,
-              tags
-            });
-            }
-            console.log(this.placeLocations);
-    });
+        this.dataService.getActivitiesData();
+        this.dataService.getEventsData();
+        this.dataService.getPlacesData();
+      }
+    );
   }
 
   openInfoWindow(marker, activity) {
@@ -247,31 +139,31 @@ export class MapComponent implements OnInit {
 
     // set zoom back to default when info window is closed
     this.infoWindow.closeclick.subscribe(() => {
-      this.zoom = 13;
+      this.dataService.zoom = 15;
     });
   }
 
   switchCase() {
-    this.sharedService.getCurrentCase().subscribe(caseValue => {
+    this.sharedService.getCurrentCase().subscribe((caseValue) => {
       switch (caseValue) {
-        case "places":
+        case 'places':
           this.showPlacesMarkers = true;
           this.showActivitiesMarkers = false;
           this.showEventsMarkers = false;
           break;
-  
-        case "activities":
+
+        case 'activities':
           this.showPlacesMarkers = false;
           this.showActivitiesMarkers = true;
           this.showEventsMarkers = false;
           break;
-  
-        case "events":
+
+        case 'events':
           this.showPlacesMarkers = false;
           this.showActivitiesMarkers = false;
           this.showEventsMarkers = true;
           break;
-      
+
         default:
           break;
       }
@@ -279,14 +171,23 @@ export class MapComponent implements OnInit {
   }
 
   zoomIn() {
-    if (this.zoom < this.options.maxZoom) this.zoom++;
+    if (this.dataService.zoom < this.dataService.options.maxZoom) this.dataService.zoom++;
   }
 
   updateLocation() {
     // send user geolocation coordinates to data service
-    const userLat = this.center.lat;
-    const userLng = this.center.lng;
+    const userLat = this.dataService.center.lat;
+    const userLng = this.dataService.center.lng;
     this.dataService.updateUserLocation(userLat, userLng);
+  }
+
+  onMarkerDragEnd(event: google.maps.MapMouseEvent) {
+    const userLat = event.latLng.lat();
+    const userLng = event.latLng.lng();
+    this.dataService.updateUserLocation(userLat, userLng);
+    this.dataService.getActivitiesData();
+    this.dataService.getEventsData();
+    this.dataService.getPlacesData();
   }
 
 }

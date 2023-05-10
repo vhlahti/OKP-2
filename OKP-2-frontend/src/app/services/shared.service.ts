@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SharedService {
 
-  private currentCaseSubject = new BehaviorSubject<string>('');
+  private currentCaseSubject = new BehaviorSubject<string>('places');
 
   setCurrentCase(caseValue: string) {
     this.currentCaseSubject.next(caseValue);
@@ -15,5 +15,4 @@ export class SharedService {
   getCurrentCase() {
     return this.currentCaseSubject.asObservable();
   }
-  
 }

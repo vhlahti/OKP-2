@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListActivitiesComponent } from './list-activities.component';
+import { NavigationComponent } from './navigation.component';
 
-describe('ListActivitiesComponent', () => {
-  let component: ListActivitiesComponent;
-  let fixture: ComponentFixture<ListActivitiesComponent>;
+describe('NavigationComponent', () => {
+  let component: NavigationComponent;
+  let fixture: ComponentFixture<NavigationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListActivitiesComponent ]
+      declarations: [ NavigationComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ListActivitiesComponent);
+    fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

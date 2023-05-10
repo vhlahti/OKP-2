@@ -59,6 +59,12 @@ public class FavoriteController : ControllerBase
             return BadRequest("Failed to parse Authorization header");
         }
 
+        // Check if post request has correct parameters
+        if (!request.Type.Equals("place") && !request.Type.Equals("activity") && !request.Type.Equals("event"))
+        {
+            return BadRequest($"Invalid place paramater: {request.Type}. Only place, activity and event are allowed");
+        }
+
         // Name id is somehow automatically derived from
         // ClaimTypes.NameIdentifier which we use in our JWT service
         request.User = _jwt.GetClaim(token, "nameid");
@@ -76,15 +82,55 @@ public class FavoriteController : ControllerBase
             // Handle the database update error here
             if (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
             {
-                return BadRequest("Record with this name and id already exists");
+                return BadRequest($"Record with name of \"{request.User}\" and id of \"{request.Id}\" already exists");
             }
-            else
-            {
-                return BadRequest("Internal server error");
-            }
+
+            // Handle other errors
+            return BadRequest("Internal server error");
+        }
+
+        return Ok(new { status = "Success" });
+    }
+
+    [HttpPost("unfavorite")]
+    public IActionResult RemoveFavorite([FromForm] FavoriteRequest request)
+    {
+        string token;
+        try
+        {
+            token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
         }
         catch
         {
+            return BadRequest("Failed to parse Authorization header");
+        }
+
+        // Check if post request has correct parameters
+        if (!request.Type.Equals("place") && !request.Type.Equals("activity") && !request.Type.Equals("event"))
+        {
+            return BadRequest($"Invalid place paramater: \"{request.Type}\". Only place, activity and event are allowed");
+        }
+
+        // Name id is somehow automatically derived from
+        // ClaimTypes.NameIdentifier which we use in our JWT service
+        request.User = _jwt.GetClaim(token, "nameid");
+
+        // Construct full favorite object from request
+        Favorite favorite = new Favorite { User = request.User, Type = request.Type, Id = request.Id };
+
+        try
+        {
+            this._context.Favorites.Remove(favorite);
+            this._context.SaveChanges();
+        }
+        catch (DbUpdateException ex)
+        {
+            if (ex is DbUpdateConcurrencyException)
+            {
+                // Handle optimistic concurrency exception
+                return BadRequest($"The record of id: \"{request.Id}\", does not exist");
+            }
+
             // Handle other exceptions here
             return BadRequest("Internal server error");
         }
