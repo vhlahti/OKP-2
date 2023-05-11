@@ -226,8 +226,9 @@ export class MapComponent implements OnInit {
         const resultPlaceLat = place.geometry.location?.lat();
         const resultPlaceLng = place.geometry.location?.lng();
 
-        // update user marker to selected place
+        // update user marker and pan to selected place
         this.dataService.center = { lat: resultPlaceLat, lng: resultPlaceLng };
+        this.dataService.pan = { lat: resultPlaceLat, lng: resultPlaceLng };
 
         // update user location to selected place
         this.dataService.updateUserLocationForApiDataGet(resultPlaceLat, resultPlaceLng);

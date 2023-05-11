@@ -45,7 +45,7 @@ export class DataService {
 
   lat: number;
   lng: number;
-  distance = 1; // distance radius from user location
+  distance = 5; // distance radius from user location
   limit = 50; // limits shown results. use: &limit=${this.limit}
 
   apiUrl = environment.apiUrl;
