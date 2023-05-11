@@ -181,6 +181,7 @@ export class MapComponent implements OnInit {
     const userLat = this.dataService.center.lat;
     const userLng = this.dataService.center.lng;
     this.dataService.updateUserLocation(userLat, userLng);
+    this.searchField.nativeElement.value = "";
   }
 
   onMarkerDragEnd(event: google.maps.MapMouseEvent) {
@@ -190,6 +191,7 @@ export class MapComponent implements OnInit {
     this.dataService.getActivitiesData();
     this.dataService.getEventsData();
     this.dataService.getPlacesData();
+    this.searchField.nativeElement.value = "";
   }
 
   ngAfterViewInit(): void {
