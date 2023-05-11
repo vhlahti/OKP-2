@@ -18,7 +18,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-5">Luo käyttäjätili</h2>
-                    <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+                    <form [formGroup]="signupForm" (ngSubmit)="onSignup()" autocomplete="off">
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <input type="text" class="form-control" id="username" formControlName="Name" />

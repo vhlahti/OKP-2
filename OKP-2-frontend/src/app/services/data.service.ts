@@ -31,7 +31,7 @@ export class DataService {
   center: google.maps.LatLngLiteral; // user location (marker)
   options: google.maps.MapOptions = {
     center: { lat: 60.172727, lng: 24.939491 },
-    maxZoom: 19,
+    maxZoom: 17,
     minZoom: 10,
     disableDefaultUI: true,
     fullscreenControl: true,

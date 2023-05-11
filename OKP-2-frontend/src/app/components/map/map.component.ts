@@ -113,6 +113,10 @@ export class MapComponent implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        this.dataService.pan = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
         this.updateLocation();
         console.log(this.dataService.center);
 
@@ -183,6 +187,7 @@ export class MapComponent implements OnInit {
   onMarkerDragEnd(event: google.maps.MapMouseEvent) {
     const userLat = event.latLng.lat();
     const userLng = event.latLng.lng();
+    this.dataService.pan = { lat: userLat, lng: userLng };
     this.dataService.updateUserLocationForApiDataGet(userLat, userLng);
     this.dataService.getActivitiesData();
     this.dataService.getEventsData();
