@@ -1,20 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import {
   faLandmark,
   faMasksTheater,
   faPersonBiking,
 } from '@fortawesome/free-solid-svg-icons';
-import { MapInfoWindow } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css'],
+  styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
+  @ViewChild('search') searchField: ElementRef;
+  @ViewChild(GoogleMap) map: GoogleMap;
 
   faLandmark = faLandmark;
   faPersonBiking = faPersonBiking;
@@ -88,8 +90,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private ngZone: NgZone) {}
 
   ngOnInit(): void {
     // get user's current location and keep track of it via geolocation api
@@ -190,4 +192,56 @@ export class MapComponent implements OnInit {
     this.dataService.getPlacesData();
   }
 
-}
+  ngAfterViewInit(): void {
+    this.searchInput();
+  }
+
+  searchInput() {
+    // set input options
+    const input = this.searchField.nativeElement;
+    const options = {
+      types: [],
+      componentRestrictions: {'country': ['FI']},
+      fields: ["formatted_address", "geometry", "name"]
+    };
+
+    // align input field on top of map
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+      this.searchField.nativeElement,
+    );
+
+    // bind autocomplete to input
+    const autocomplete = new google.maps.places.Autocomplete(input, options);
+      
+    // set action to handle suggestion click
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
+        //get the place result
+        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+        // verify result.
+        if (!place.geometry || !place.geometry.location) {
+        return;
+        }
+
+        // save place coordinates
+        const resultPlaceLat = place.geometry.location?.lat();
+        const resultPlaceLng = place.geometry.location?.lng();
+
+        // update user marker to selected place
+        this.dataService.center = { lat: resultPlaceLat, lng: resultPlaceLng };
+
+        // update user location to selected place
+        this.dataService.updateUserLocation(resultPlaceLat, resultPlaceLng);
+
+        // fetch api results near new location
+        this.dataService.getActivitiesData();
+        this.dataService.getEventsData();
+        this.dataService.getPlacesData();
+      });
+    });
+  }
+
+} 
+
+

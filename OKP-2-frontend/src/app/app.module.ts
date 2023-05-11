@@ -43,7 +43,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     GoogleMapsModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [DataService, SharedService, ForecastService, AccountService, HelsinkiService],
   bootstrap: [AppComponent]

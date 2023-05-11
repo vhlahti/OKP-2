@@ -32,7 +32,8 @@ export class DataService {
     minZoom: 10,
     disableDefaultUI: true,
     fullscreenControl: true,
-    zoomControl: true
+    zoomControl: true,
+    gestureHandling: 'greedy'
   };
 
   constructor(private http: HttpClient) { }
