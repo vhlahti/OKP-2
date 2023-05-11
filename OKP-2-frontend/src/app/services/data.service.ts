@@ -8,6 +8,7 @@ import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { Event } from 'src/app/models/helsinki-api-model';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
+import { GoogleMap } from '@angular/google-maps';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,17 @@ export class DataService {
   eventMarkerInfo: ILocation[] = [];
   places: PlaceV2[] = [];
   placeMarkerInfo: ILocation[] = [];
+  public map: GoogleMap;
 
   // google maps settings
   zoom = 15;
   height = '300px';
   width = '100%';
-  center: google.maps.LatLngLiteral;
+  pan: google.maps.LatLngLiteral; // point of view
+  center: google.maps.LatLngLiteral; // user location (marker)
   options: google.maps.MapOptions = {
     center: { lat: 60.172727, lng: 24.939491 },
-    maxZoom: 17,
+    maxZoom: 19,
     minZoom: 10,
     disableDefaultUI: true,
     fullscreenControl: true,
@@ -48,7 +51,7 @@ export class DataService {
   apiUrl = environment.apiUrl;
  
   // update default location with chosen coordinates
-  updateUserLocation(newLat: number, newLng: number) {
+  updateUserLocationForApiDataGet(newLat: number, newLng: number) {
     this.lat = newLat;
     this.lng = newLng;
   }
@@ -168,6 +171,10 @@ export class DataService {
             }
             console.log(this.placeMarkerInfo);
     });
+  }
+
+  zoomIn() {
+    if (this.zoom < this.options.maxZoom) this.zoom++;
   }
 
 }

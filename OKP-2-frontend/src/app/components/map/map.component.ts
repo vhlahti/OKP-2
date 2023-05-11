@@ -137,7 +137,7 @@ export class MapComponent implements OnInit {
   openInfoWindow(marker, activity) {
     this.selectedMarker = activity;
     this.infoWindow.open(marker);
-    this.zoomIn();
+    this.dataService.zoomIn();
 
     // set zoom back to default when info window is closed
     this.infoWindow.closeclick.subscribe(() => {
@@ -172,22 +172,18 @@ export class MapComponent implements OnInit {
     });
   }
 
-  zoomIn() {
-    if (this.dataService.zoom < this.dataService.options.maxZoom) this.dataService.zoom++;
-  }
-
   updateLocation() {
     // send user geolocation coordinates to data service
     const userLat = this.dataService.center.lat;
     const userLng = this.dataService.center.lng;
-    this.dataService.updateUserLocation(userLat, userLng);
+    this.dataService.updateUserLocationForApiDataGet(userLat, userLng);
     this.searchField.nativeElement.value = "";
   }
 
   onMarkerDragEnd(event: google.maps.MapMouseEvent) {
     const userLat = event.latLng.lat();
     const userLng = event.latLng.lng();
-    this.dataService.updateUserLocation(userLat, userLng);
+    this.dataService.updateUserLocationForApiDataGet(userLat, userLng);
     this.dataService.getActivitiesData();
     this.dataService.getEventsData();
     this.dataService.getPlacesData();
@@ -234,7 +230,7 @@ export class MapComponent implements OnInit {
         this.dataService.center = { lat: resultPlaceLat, lng: resultPlaceLng };
 
         // update user location to selected place
-        this.dataService.updateUserLocation(resultPlaceLat, resultPlaceLng);
+        this.dataService.updateUserLocationForApiDataGet(resultPlaceLat, resultPlaceLng);
 
         // fetch api results near new location
         this.dataService.getActivitiesData();

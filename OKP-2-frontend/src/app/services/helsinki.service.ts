@@ -24,7 +24,7 @@ export class HelsinkiService {
         }
         else if (type == "Activities") {
             let activity = data as ActivityV2;
-            name = activity.descriptions['fi']?.name ?? activity.descriptions['en']?.name
+            name = activity.descriptions['fi']?.name ?? activity.descriptions['en']?.name;
         }
         
         return name;
@@ -71,4 +71,26 @@ export class HelsinkiService {
     hasLink(data: ApiData, type: ApiTypes) {
         return !!this.getLink(data, type);
     }
+
+    getCoordinates(data: ApiData, type: ApiTypes) {
+        let position: { lat?: number; lon?: number };
+      
+        if (type === "Places") {
+          let place = data as PlaceV2;
+          position = { lat: place.location?.lat, lon: place.location?.lon };
+        } else if (type === "Events") {
+          let event = data as Event;
+          position = { lat: event.location?.lat, lon: event.location?.lon };
+        } else if (type === "Activities") {
+          let activity = data as ActivityV2;
+          if (activity.address?.location) {
+            const { lat, long } = activity.address.location;
+            position = { lat, lon: long };
+          } else {
+            console.log('Ei sijaintitietoja.')
+          }
+        }
+      
+        return { lat: position.lat ?? 0, lon: position.lon ?? 0 };
+      }
 }

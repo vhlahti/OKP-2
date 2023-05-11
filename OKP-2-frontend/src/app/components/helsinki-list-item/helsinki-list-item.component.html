@@ -2,7 +2,7 @@
     <div class="card-body">
         <h4 class="card-title">{{ helsinkiService.getName(data, type) }}</h4>
         <p class="card-text">{{ helsinkiService.getDescription(data, type) }}</p>
-        <a href="#" class="btn btn-primary me-1">Näytä kartalla</a>
+        <button (click)="showOnMap()" class="btn btn-primary me-1">Näytä kartalla</button>
         <a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn btn-primary" target="_blank">Kotisivut</a>
     </div>
 </div>
