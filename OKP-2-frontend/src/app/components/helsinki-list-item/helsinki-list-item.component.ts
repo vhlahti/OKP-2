@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivityV2, PlaceV2, Event } from 'src/app/models/helsinki-api-model';
 import { DataService } from 'src/app/services/data.service';
 import { HelsinkiService } from 'src/app/services/helsinki.service';
+import { faCircleInfo, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 type ApiData = PlaceV2 | ActivityV2 | Event;
 type ApiTypes = "Places" | "Activities" | "Events"
@@ -12,6 +13,17 @@ type ApiTypes = "Places" | "Activities" | "Events"
     styleUrls: ['./helsinki-list-item.component.css']
 })
 export class HelsinkiListItemComponent {
+
+    faCircleInfo = faCircleInfo;
+  faLocationDot = faLocationDot;
+
+    textShow: boolean | undefined;
+  showText(){
+    this.textShow = true;
+   }
+   hideText(){
+    this.textShow = false;
+   }
 
     @Input()
     public data: ApiData;
