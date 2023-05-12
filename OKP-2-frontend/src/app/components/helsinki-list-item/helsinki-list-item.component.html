@@ -7,7 +7,7 @@
             <span><p *ngIf="textShow">{{ helsinkiService.getDescription(data, type) }}
                 <button style="border-style: none;" (click) = "hideText()" class="btn-hide">Piilota</button></p></span>
                 
-        <a class="location"><fa-icon [icon]="faLocationDot" size="xl"></fa-icon><button style="border-style: none;" class="btn-location">Sijainti kartalla</button></a>
+        <a class="location"><fa-icon [icon]="faLocationDot" size="xl"></fa-icon><button style="border-style: none;" class="btn-location" (click)="showOnMap()">Sijainti kartalla</button></a>
 
         <!--<a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn btn-primary" target="_blank">Kotisivut</a>-->
     </div>
