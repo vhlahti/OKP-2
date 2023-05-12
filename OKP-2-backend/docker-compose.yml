@@ -11,8 +11,8 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ${WEBAPP_STORAGE_HOME:-}/db:/var/lib/postgresql/data
-      - ${WEBAPP_STORAGE_HOME:-.}/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - db:/var/lib/postgresql/data
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
 
   adminer:
     image: adminer
@@ -25,12 +25,10 @@ services:
     ports:
       - ${WEBSITES_PORT:-7266}:7266 # Use the WEBSITES_PORT variable in the port mapping
     environment:
-      DB_HOST: db
+      DB_HOST: db:5432
       JWT_SECRET: aGVsbG8gd29ybGQ= # Development (not very secret) secret
-      WEBSITES_PORT: 7266 # Set the port for the WebApp
     depends_on:
       - db
 
 volumes:
   db:
-    driver: local
