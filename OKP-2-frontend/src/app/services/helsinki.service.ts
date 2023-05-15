@@ -93,4 +93,36 @@ export class HelsinkiService {
       
         return { lat: position.lat ?? 0, lon: position.lon ?? 0 };
       }
+
+    getAddress(data: ApiData, type: ApiTypes) {
+        let addresses: { street_address: string, postal_code: string, city: string }[] = [];
+
+        if (type == "Places") {
+            let place = data as PlaceV2;
+            addresses.push({
+            street_address: place.location.address.street_address,
+            postal_code: place.location.address.postal_code,
+            city: place.location.address.locality
+        });
+        }
+        else if (type == "Events") {
+            let event = data as Event;
+            addresses.push({
+            street_address: event.location.address.street_address,
+            postal_code: event.location.address.postal_code,
+            city: event.location.address.locality
+        });
+        }
+        else if (type == "Activities") {
+            let activity = data as ActivityV2;
+            addresses.push({
+            street_address: activity.address.streetName,
+            postal_code: activity.address.postalCode,
+            city: activity.address.city
+        });
+        }
+    
+        return addresses;
+    }
+
 }
