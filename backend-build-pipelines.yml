@@ -9,6 +9,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'MicoRegistery'
+    repository: 'vhlahtiokp2_app'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
 
