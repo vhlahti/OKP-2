@@ -12,6 +12,7 @@ steps:
     repository: 'vhlahtiokp2_app'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    tags: latest
 
 - task: Docker@2
   inputs:
