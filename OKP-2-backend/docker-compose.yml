@@ -23,7 +23,7 @@ services:
   app:
     build: .
     ports:
-      - 7266:7266 # Use the WEBSITES_PORT variable in the port mapping
+      - 7266:443
     environment:
       DB_HOST: db:5432
       JWT_SECRET: aGVsbG8gd29ybGQ= # Development (not very secret) secret
