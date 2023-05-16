@@ -29,14 +29,14 @@ COPY --from=backend-builder /backend/https .
 ENV ASPNETCORE_ENVIRONMENT Development
 
 # Configure the application to use HTTPS
-ENV ASPNETCORE_URLS https://+:7266;http://+:5121
-ENV ASPNETCORE_HTTPS_PORT 7266
+ENV ASPNETCORE_URLS https://+:443;http://+:80
+ENV ASPNETCORE_HTTPS_PORT 443
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password password
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path aspnetapp.pfx
 
 # Expose the HTTP and HTTPS ports
-EXPOSE 7266
-EXPOSE 5121
+EXPOSE 443
+EXPOSE 80
 
 # Start the backend
 ENTRYPOINT ["dotnet", "OKP-2-backend.dll"]
