@@ -56,11 +56,12 @@
   <div class="info-container" *ngIf="selectedMarker">
     <article class="text">
       <p class="info-header">{{ selectedMarker.name }}</p>
-      <p class="about">{{ selectedMarker.about }}</p>
-      <p class="address">{{ selectedMarker.address.street_address }}, {{ selectedMarker.address.postal_code }}, {{ selectedMarker.address.city }}</p>
-      <a class="link" href="{{ selectedMarker.url }}">Kotisivu</a>
+      <!--<p class="about">{{ selectedMarker.about }}</p>-->
+      <p class="address">{{ selectedMarker.address.street_address }}, {{ selectedMarker.address.postal_code }} {{ selectedMarker.address.city }}</p>
+      <!--<a class="link" href="{{ selectedMarker.url }}">Kotisivu</a>-->
     </article>
-    <div *ngFor="let tag of selectedMarker.tags" class="badge bg-info text-light">{{ tag }}</div>
+    <div *ngFor="let tag of selectedMarker.tags" class="badge bg-info">{{ tag }}</div>
+    <figure><img src="" alt="photo"></figure>
   </div>
 </map-info-window>
 
