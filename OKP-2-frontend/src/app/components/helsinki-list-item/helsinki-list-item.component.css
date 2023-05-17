@@ -21,9 +21,17 @@
     padding-right: 1rem;
 }
 
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0BCAF0
+}
+
 .btn-hide {
     font-weight: bold;
     background-color: transparent;
+    padding-top: 0.5rem;
+    margin-left: -0.5rem;
 }
 
 .location {
