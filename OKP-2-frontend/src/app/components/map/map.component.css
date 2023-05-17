@@ -25,21 +25,14 @@ p {
 }
 
 .info-header {
-  font-size: 1.2rem;
   font-weight: bold;
 }
 
-.address {
-  font-weight: bold;
-  padding-bottom: 0.6rem;
-}
-
-/* marker-info image (if used) */
 img {
   height: auto;
   max-width: 100px;
   float: none;
-  padding: 0 0 1rem 0;
+  padding: 1rem 0;
 }
   
 .tags {
@@ -48,6 +41,7 @@ img {
 
 .badge {
   margin: 0.1rem;
+  color: #000;
 }
 
 /* map marker info window ends */
