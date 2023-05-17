@@ -1,1 +1,24 @@
-footer works!
+<footer
+  class="footer-container text-center"
+  [ngClass]="{ 'show-footer': showFooter }"
+>
+  <div class="logo-container">
+    <h4 routerLink="/home">
+      <fa-icon class="logo" [icon]="faMapLocationDot"></fa-icon>MAPPi
+    </h4>
+    <p>
+      this MAPPi uses MyHelsinki Open API for activities, events and places in
+      Helsinki city.
+    </p>
+    <p>Code source can be found in github below.</p>
+  </div>
+  <div>
+    <a
+      class="github-logo"
+      href="https://github.com/vhlahti/OKP-2"
+      target="_blank"
+    >
+      <fa-icon [icon]="faGithub" />
+    </a>
+  </div>
+</footer>
