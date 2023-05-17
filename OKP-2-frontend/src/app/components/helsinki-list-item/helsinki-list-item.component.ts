@@ -38,6 +38,6 @@ export class HelsinkiListItemComponent {
         const resultPlaceLat = this.helsinkiService.getCoordinates(this.data, this.type).lat;
         const resultPlaceLng = this.helsinkiService.getCoordinates(this.data, this.type).lon;
         this.dataService.pan = { lat: resultPlaceLat, lng: resultPlaceLng };
-        this.dataService.zoom = 17;
+        this.dataService.zoom = 19;
     }
 }
