@@ -9,7 +9,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-string port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 string[] origins = { "http://localhost:4200", "https://localhost:4200", "https://okp-2-frontend.up.railway.app" };
 
 builder.Services.AddCors(options =>
