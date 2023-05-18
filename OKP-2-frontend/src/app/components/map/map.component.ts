@@ -120,6 +120,7 @@ export class MapComponent implements OnInit {
         this.updateLocation();
         console.log(this.dataService.center);
 
+        this.dataService.getFavoritesData();
         this.dataService.getActivitiesData();
         this.dataService.getEventsData();
         this.dataService.getPlacesData();
@@ -131,6 +132,7 @@ export class MapComponent implements OnInit {
         this.updateLocation();
         console.log(this.dataService.center);
 
+        this.dataService.getFavoritesData();
         this.dataService.getActivitiesData();
         this.dataService.getEventsData();
         this.dataService.getPlacesData();
@@ -189,6 +191,7 @@ export class MapComponent implements OnInit {
     const userLng = event.latLng.lng();
     this.dataService.pan = { lat: userLat, lng: userLng };
     this.dataService.updateUserLocationForApiDataGet(userLat, userLng);
+    this.dataService.getFavoritesData();
     this.dataService.getActivitiesData();
     this.dataService.getEventsData();
     this.dataService.getPlacesData();
@@ -239,6 +242,7 @@ export class MapComponent implements OnInit {
         this.dataService.updateUserLocationForApiDataGet(resultPlaceLat, resultPlaceLng);
 
         // fetch api results near new location
+        this.dataService.getFavoritesData();
         this.dataService.getActivitiesData();
         this.dataService.getEventsData();
         this.dataService.getPlacesData();
