@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=backend-builder /backend/out .
 
 # Expose the specified port
-EXPOSE $PORT
+EXPOSE 7266
 
 # Start the backend
-ENTRYPOINT ["dotnet", "OKP-2-backend.dll" , "--urls", "http://0.0.0.0:$PORT"]
+ENTRYPOINT ["dotnet", "OKP-2-backend.dll" , "--urls", "http://0.0.0.0:7266"]
