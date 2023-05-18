@@ -15,6 +15,11 @@ export class AccountService {
 
     constructor(private http: HttpClient) { }
 
+    isLoggedIn() {
+    const token = this.getToken(); // Retrieve the JWT token
+    return !!token;
+    }
+
     signup(formData: FormData) {
         return this.http.post(this.baseUrl + 'signup', formData);
     }

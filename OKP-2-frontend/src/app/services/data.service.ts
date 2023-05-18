@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.development';
-import { APIResponse } from 'src/app/models/IApiResponse';
+import { ApiTypes, APIFavoritesResponse, APIResponse } from 'src/app/models/IApiResponse';
 import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { Event } from 'src/app/models/helsinki-api-model';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
 import { GoogleMap } from '@angular/google-maps';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,13 @@ import { GoogleMap } from '@angular/google-maps';
 export class DataService {
 
   activities: ActivityV2[] = [];
+  favoriteActivities: ActivityV2[] = [];
   activityMarkerInfo: ILocation[] = [];
   events: Event[] = [];
+  favoriteEvents: Event[] = [];
   eventMarkerInfo: ILocation[] = [];
   places: PlaceV2[] = [];
+  favoritePlaces: PlaceV2[] = [];
   placeMarkerInfo: ILocation[] = [];
   public map: GoogleMap;
 
@@ -39,7 +43,7 @@ export class DataService {
     gestureHandling: 'greedy'
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AccountService) { }
 
   // filter settings
 
@@ -74,6 +78,56 @@ export class DataService {
 
   getPlaces() {
     return this.http.get(this.apiUrl + "places" + this.filterPath())
+  }
+
+  getFavorites() {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+    });
+
+    return this.http.post(this.apiUrl + "favorites", null, { headers })
+  }
+
+  addFavorite(type: ApiTypes, id: string) {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Authorization": `Bearer ${token}`,
+    });
+
+    const formData = new FormData();
+    formData.append('Type', type.toLowerCase());
+    formData.append('Id', id);
+
+    console.log(`Adding new favorite (type: ${type}, id: ${id})`)
+
+    return this.http.post(this.apiUrl + "favorite", formData, { headers })
+  }
+
+  removeFavorite(type: ApiTypes, id: string) {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Authorization": `Bearer ${token}`,
+    });
+
+    const formData = new FormData();
+    formData.append('Type', type.toLowerCase());
+    formData.append('Id', id);
+
+    console.log(`Removing favorite (type: ${type}, id: ${id})`)
+
+    return this.http.post(this.apiUrl + "unfavorite", formData, { headers })
+  }
+
+  getFavoritesData() {
+    this.getFavorites().subscribe((res: APIFavoritesResponse) => {
+        console.log("Favorites");
+        console.log(res.favorites);
+        this.favoriteEvents = res.favorites.events.map(event => JSON.parse(event));
+        this.favoriteActivities = res.favorites.activities.map(activity => JSON.parse(activity));
+        this.favoritePlaces = res.favorites.places.map(place => JSON.parse(place));
+    });
   }
 
   getActivitiesData() {

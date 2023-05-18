@@ -1,5 +1,8 @@
-<div class="card shadow border-dark mb-2">
-    <h5 class="card-header bg-info"> {{ helsinkiService.getName(data, type) }} </h5>
+<div class="card shadow border-dark my-4">
+    <div class="d-flex gap-2 align-items-center card-header card-header-name ">
+        <fa-icon *ngIf="this.accountService.isLoggedIn()" [ngClass]="favorite ? 'text-warning' : 'text-white'" (click)="toggleFavorite()" [icon]="faStar" size="xl"></fa-icon>
+        <h5 class="text-white m-0"> {{ helsinkiService.getName(data, type) }} </h5>
+    </div>
     <div class="address">
         <p *ngFor="let item of helsinkiService.getAddress(data, type)">
         {{ item.street_address }}, {{ item.postal_code }} {{ item.city }}
