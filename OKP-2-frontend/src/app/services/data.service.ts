@@ -52,7 +52,7 @@ export class DataService {
   distance = 5; // distance radius from user location
   limit = 50; // limits shown results. use: &limit=${this.limit}
 
-  apiUrl = environment.apiUrl;
+  apiUrl = process.env["BACKEND_URL"] ?? environment.apiUrl;
  
   // update default location with chosen coordinates
   updateUserLocationForApiDataGet(newLat: number, newLng: number) {
