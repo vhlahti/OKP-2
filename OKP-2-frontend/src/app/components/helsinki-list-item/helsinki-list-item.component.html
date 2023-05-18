@@ -9,13 +9,12 @@
     <div class="card-body d-flex">   
         
         <a class=”info”><p><fa-icon [icon]="faCircleInfo" size="xl"></fa-icon><button style="border-style: none;" (click) = "showText()" class="btn-info bs-linebreak">Lisätietoja &#9660; </button></a>
-            <span><p *ngIf="textShow">{{ helsinkiService.getDescription(data, type) }}
-                <a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn-homepg" target="_blank">Yrityksen Kotisivut</a>
+            <span><div *ngIf="textShow"><p>{{ helsinkiService.getDescription(data, type) }}</p>
+                <a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn-homepg" target="_blank">Yrityksen kotisivut</a>
                 <br>
-                <button style="border-style: none;" (click) = "hideText()" class="btn-hide">Piilota</button></p></span>
+                <button style="border-style: none;" (click) = "hideText()" class="btn-hide">Piilota</button></div></span>
                 
         <a class="location"><fa-icon [icon]="faLocationDot" size="xl"></fa-icon><button style="border-style: none;" class="btn-location" (click)="showOnMap()">Sijainti kartalla</button></a>
 
-        
     </div>
 </div>
