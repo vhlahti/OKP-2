@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.development';
 import { ApiTypes, APIFavoritesResponse, APIResponse } from 'src/app/models/IApiResponse';
 import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { Event } from 'src/app/models/helsinki-api-model';
@@ -10,6 +9,7 @@ import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
 import { GoogleMap } from '@angular/google-maps';
 import { AccountService } from './account.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
